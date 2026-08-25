@@ -47,10 +47,7 @@ export default function Skills() {
               return (
                 <button
                   key={tab.id}
-                  onClick={() => {
-                    sounds.playClick();
-                    setActiveTab(tab.id);
-                  }}
+                  onClick={() => setActiveTab(tab.id)}
                   data-cursor="SELECT"
                   className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-mono tracking-wider transition-all duration-200 border ${
                     active
@@ -91,10 +88,7 @@ export default function Skills() {
           {currentSkills.map((skill) => (
             <div
               key={skill.name}
-              onMouseEnter={() => {
-                sounds.playPop();
-                setInspectedSkill(skill);
-              }}
+              onMouseEnter={() => setInspectedSkill(skill)}
               onMouseLeave={() => setInspectedSkill(null)}
               data-cursor="SKILL"
               className="p-5 rounded-2xl bg-white/80 border border-black/10 hover:border-[#2E828F] hover:bg-white hover:shadow-lg transition-all duration-200 cursor-pointer group flex flex-col justify-between"

@@ -9,7 +9,6 @@ export default function Contact() {
   const [status, setStatus] = useState('');
 
   const copyEmail = () => {
-    sounds.playPop();
     navigator.clipboard.writeText('nittojoshi@example.com');
     setCopied(true);
     setTimeout(() => setCopied(false), 2200);
@@ -22,7 +21,6 @@ export default function Contact() {
       return;
     }
 
-    sounds.playPop();
     setStatus('Message registered! Thank you for reaching out.');
     
     try {
@@ -127,7 +125,6 @@ export default function Contact() {
                     href={s.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={() => sounds.playClick()}
                     data-cursor="VISIT"
                     className="px-3.5 py-1.5 rounded-full bg-white/[0.06] border border-white/10 hover:border-[#2E828F] hover:text-[#2E828F] text-xs font-mono tracking-wider transition-colors inline-flex items-center gap-1.5"
                     style={{ textDecoration: 'none', color: '#fff' }}
