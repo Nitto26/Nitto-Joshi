@@ -13,6 +13,14 @@ export default function Hero() {
   const containerRef = useRef(null);
   const hitTimeoutRef = useRef(null);
 
+  // Preload hero2.png immediately on mount so it appears with 0ms delay on Vercel
+  useEffect(() => {
+    const img1 = new Image();
+    img1.src = hero1Img;
+    const img2 = new Image();
+    img2.src = hero2Img;
+  }, []);
+
   // Subtle Mouse Parallax Effect
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -27,7 +35,7 @@ export default function Hero() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Handle head tap Easter egg (NO SOUND)
+  // Handle head tap Easter egg (NO SOUND, instant swap)
   const handleHeadClick = (e) => {
     e.stopPropagation();
     setIsHit(true);
@@ -117,7 +125,7 @@ export default function Hero() {
             </span>
           </h1>
 
-          {/* Hairline separator with dot terminal matching Reference 1 */}
+          {/* Hairline separator with dot terminal */}
           <div className="flex items-center w-full max-w-md my-4">
             <div className="h-[1.5px] bg-[#0C0C0E] flex-grow" style={{ height: '1.5px', backgroundColor: '#0C0C0E' }} />
             <div
@@ -136,7 +144,7 @@ export default function Hero() {
             </p>
           </div>
 
-          {/* CTA: VIEW MY WORK button matching Reference 1 */}
+          {/* CTA: VIEW MY WORK button */}
           <div className="mt-8">
             <button
               onClick={scrollToWork}
@@ -160,10 +168,10 @@ export default function Hero() {
 
         </div>
 
-        {/* Right Column: Hero Cutout PNG & Graphic Elements matching Reference 1 */}
+        {/* Right Column: Hero Cutout PNG & Graphic Elements */}
         <div className="lg:col-span-6 relative flex items-center justify-center min-h-[500px] lg:min-h-[640px]">
           
-          {/* Circular Brush Paint Texture Behind Nitto matching Reference 1 */}
+          {/* Circular Brush Paint Texture Behind Nitto */}
           <div
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] sm:w-[460px] lg:w-[520px] h-[340px] sm:h-[460px] lg:h-[520px] rounded-full pointer-events-none -z-0"
             style={{
@@ -173,7 +181,7 @@ export default function Hero() {
             }}
           />
 
-          {/* Upper Right Code Symbol: </> matching Reference 1 */}
+          {/* Upper Right Code Symbol: </> */}
           <div
             className="absolute top-6 right-2 sm:right-6 z-20 text-[#0C0C0E] font-mono text-xl sm:text-2xl font-bold tracking-widest select-none"
             style={{ fontFamily: "'Space Grotesk', monospace" }}
@@ -181,7 +189,7 @@ export default function Hero() {
             &lt;/&gt;
           </div>
 
-          {/* 3x3 Dot Grid Matrix matching Reference 1 */}
+          {/* 3x3 Dot Grid Matrix */}
           <div className="absolute right-0 sm:right-4 top-1/2 translate-y-4 z-20 grid grid-cols-3 gap-2.5 opacity-80 select-none">
             {[...Array(9)].map((_, i) => (
               <div
@@ -192,7 +200,7 @@ export default function Hero() {
             ))}
           </div>
 
-          {/* Bottom Left Brush Stroke Scribble matching Reference 1 */}
+          {/* Bottom Left Brush Stroke Scribble */}
           <svg
             className="absolute bottom-6 left-2 sm:left-8 w-20 sm:w-28 h-12 text-[#9A9690] opacity-60 z-20 pointer-events-none"
             viewBox="0 0 100 40"
@@ -205,7 +213,7 @@ export default function Hero() {
             <path d="M5 32 L35 8 L55 30 L80 12 L95 24" />
           </svg>
 
-          {/* Cutout PNG Container (hero1.png / hero2.png) */}
+          {/* Cutout PNG Container */}
           <div
             className={`relative w-full max-w-[420px] sm:max-w-[480px] lg:max-w-[540px] flex items-end justify-center cursor-pointer select-none transition-transform duration-300 z-10 ${
               isHit ? 'shake-active' : ''
@@ -217,17 +225,32 @@ export default function Hero() {
             data-cursor-head="true"
             aria-label="Nitto Joshi interactive portrait - Tap head"
           >
-            {/* The Cutout PNG (hero1.png by default, hero2.png on tap) */}
-            <img
-              src={isHit ? hero2Img : hero1Img}
-              alt={isHit ? "Nitto Joshi reacting: OWCH!" : "Nitto Joshi"}
-              className={`w-auto max-h-[500px] sm:max-h-[580px] lg:max-h-[640px] object-contain drop-shadow-2xl transition-all duration-200 ${
-                isHit ? 'scale-103 brightness-95' : 'scale-100 hover:scale-102'
-              }`}
-              style={{
-                filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.12))'
-              }}
-            />
+            {/* Dual Images Loaded in DOM for 0ms Instant Swap on Vercel */}
+            <div className="relative w-auto max-h-[500px] sm:max-h-[580px] lg:max-h-[640px]">
+              {/* Default Hero Image (hero1.png) */}
+              <img
+                src={hero1Img}
+                alt="Nitto Joshi"
+                className={`w-auto max-h-[500px] sm:max-h-[580px] lg:max-h-[640px] object-contain drop-shadow-2xl transition-opacity duration-100 ${
+                  isHit ? 'opacity-0 absolute inset-0 pointer-events-none' : 'opacity-100 relative'
+                }`}
+                style={{
+                  filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.12))'
+                }}
+              />
+
+              {/* Reaction Image (hero2.png) pre-mounted */}
+              <img
+                src={hero2Img}
+                alt="Nitto Joshi reacting: OWCH!"
+                className={`w-auto max-h-[500px] sm:max-h-[580px] lg:max-h-[640px] object-contain drop-shadow-2xl transition-opacity duration-100 ${
+                  isHit ? 'opacity-100 relative scale-103 brightness-95' : 'opacity-0 absolute inset-0 pointer-events-none'
+                }`}
+                style={{
+                  filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.12))'
+                }}
+              />
+            </div>
 
             {/* Comic "OWCH!" Pop Bubble on Hit */}
             {isHit && (

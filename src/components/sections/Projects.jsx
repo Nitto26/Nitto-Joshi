@@ -83,66 +83,152 @@ export default function Projects() {
 
   const startYRef = useRef(0);
   const currentYRef = useRef(0);
+  const activeIndexRef = useRef(0);
+  const isTransitioningRef = useRef(false);
   const stackRef = useRef(null);
-  const isScrollingCardsRef = useRef(false);
 
   const total = PROJECTS.length;
 
+  // Keep ref synchronized with activeIndex for event listeners
+  useEffect(() => {
+    activeIndexRef.current = activeIndex;
+  }, [activeIndex]);
+
   const nextCard = useCallback(() => {
-    setActiveIndex((prev) => Math.min(total - 1, prev + 1));
+    setActiveIndex((prev) => {
+      const next = Math.min(total - 1, prev + 1);
+      activeIndexRef.current = next;
+      return next;
+    });
   }, [total]);
 
   const prevCard = useCallback(() => {
-    setActiveIndex((prev) => Math.max(0, prev - 1));
+    setActiveIndex((prev) => {
+      const p = Math.max(0, prev - 1);
+      activeIndexRef.current = p;
+      return p;
+    });
   }, []);
 
-  // Handle direct video link click
   const handleCardClick = (project) => {
-    if (project.videoUrl) {
+    if (project && project.videoUrl) {
       window.open(project.videoUrl, '_blank', 'noopener,noreferrer');
     }
   };
 
-  // Dedicated Card Stack Scroll Hijack:
-  // When user scrolls on top of the cards, cycle through the cards until bounds
+  // Immediate Wheel Event Listener (Works instantly on hover without clicking first)
   useEffect(() => {
     const el = stackRef.current;
     if (!el) return;
 
-    const onWheel = (e) => {
-      // Check delta
-      if (Math.abs(e.deltaY) < 15) return;
+    const handleWheel = (e) => {
+      if (Math.abs(e.deltaY) < 12) return;
+
+      const current = activeIndexRef.current;
 
       if (e.deltaY > 0) {
-        // Scrolling DOWN
-        if (activeIndex < total - 1) {
-          e.preventDefault(); // Stop main page from scrolling
-          if (!isScrollingCardsRef.current) {
-            isScrollingCardsRef.current = true;
+        // Scroll DOWN: flip to next card if not at end
+        if (current < total - 1) {
+          e.preventDefault();
+          if (!isTransitioningRef.current) {
+            isTransitioningRef.current = true;
             nextCard();
             setTimeout(() => {
-              isScrollingCardsRef.current = false;
-            }, 380);
+              isTransitioningRef.current = false;
+            }, 350);
           }
         }
       } else if (e.deltaY < 0) {
-        // Scrolling UP
-        if (activeIndex > 0) {
-          e.preventDefault(); // Stop main page from scrolling
-          if (!isScrollingCardsRef.current) {
-            isScrollingCardsRef.current = true;
+        // Scroll UP: flip to previous card if not at start
+        if (current > 0) {
+          e.preventDefault();
+          if (!isTransitioningRef.current) {
+            isTransitioningRef.current = true;
             prevCard();
             setTimeout(() => {
-              isScrollingCardsRef.current = false;
-            }, 380);
+              isTransitioningRef.current = false;
+            }, 350);
           }
         }
       }
     };
 
-    el.addEventListener('wheel', onWheel, { passive: false });
-    return () => el.removeEventListener('wheel', onWheel);
-  }, [activeIndex, total, nextCard, prevCard]);
+    el.addEventListener('wheel', handleWheel, { passive: false });
+    return () => el.removeEventListener('wheel', handleWheel);
+  }, [total, nextCard, prevCard]);
+
+  // Mobile Touch Event Handling (Prevents main page scroll while flipping cards)
+  useEffect(() => {
+    const el = stackRef.current;
+    if (!el) return;
+
+    let touchStartY = 0;
+    let touchEndY = 0;
+    let isSwiping = false;
+
+    const onTouchStart = (e) => {
+      if (e.touches.length > 0) {
+        touchStartY = e.touches[0].clientY;
+        touchEndY = touchStartY;
+        startYRef.current = touchStartY;
+        currentYRef.current = touchStartY;
+        isSwiping = true;
+        setIsDragging(true);
+      }
+    };
+
+    const onTouchMove = (e) => {
+      if (!isSwiping || e.touches.length === 0) return;
+      touchEndY = e.touches[0].clientY;
+      currentYRef.current = touchEndY;
+      const deltaY = touchEndY - touchStartY;
+
+      const current = activeIndexRef.current;
+
+      // If swiping UP and cards remain, lock page scroll
+      if (deltaY < -10 && current < total - 1) {
+        if (e.cancelable) e.preventDefault();
+        setDragY(deltaY);
+      }
+      // If swiping DOWN and previous cards exist, lock page scroll
+      else if (deltaY > 10 && current > 0) {
+        if (e.cancelable) e.preventDefault();
+        setDragY(deltaY);
+      } else {
+        setDragY(deltaY * 0.3);
+      }
+    };
+
+    const onTouchEnd = (e) => {
+      if (!isSwiping) return;
+      isSwiping = false;
+      setIsDragging(false);
+
+      const deltaY = touchEndY - touchStartY;
+      const current = activeIndexRef.current;
+
+      // Small movement (< 8px) is a Tap -> Open Video
+      if (Math.abs(deltaY) < 8) {
+        handleCardClick(PROJECTS[current]);
+      } else if (deltaY < -40 && current < total - 1) {
+        nextCard();
+      } else if (deltaY > 40 && current > 0) {
+        prevCard();
+      }
+
+      setDragY(0);
+    };
+
+    el.addEventListener('touchstart', onTouchStart, { passive: true });
+    el.addEventListener('touchmove', onTouchMove, { passive: false });
+    el.addEventListener('touchend', onTouchEnd, { passive: true });
+
+    return () => {
+      el.removeEventListener('touchstart', onTouchStart);
+      el.removeEventListener('touchmove', onTouchMove);
+      el.removeEventListener('touchend', onTouchEnd);
+    };
+  }, [total, nextCard, prevCard]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -157,35 +243,31 @@ export default function Projects() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [activeIndex, nextCard, prevCard]);
 
-  // Touch / Mouse Drag Gesture Handling
-  const handleTouchStart = (e) => {
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    startYRef.current = clientY;
-    currentYRef.current = clientY;
+  // Desktop Mouse Drag Handling
+  const handleMouseDown = (e) => {
+    startYRef.current = e.clientY;
+    currentYRef.current = e.clientY;
     setIsDragging(true);
   };
 
-  const handleTouchMove = (e) => {
+  const handleMouseMove = (e) => {
     if (!isDragging) return;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    currentYRef.current = clientY;
-    const delta = clientY - startYRef.current;
+    currentYRef.current = e.clientY;
+    const delta = e.clientY - startYRef.current;
     setDragY(delta);
   };
 
-  const handleTouchEnd = () => {
+  const handleMouseUp = () => {
     if (!isDragging) return;
     setIsDragging(false);
     const delta = currentYRef.current - startYRef.current;
+    const current = activeIndexRef.current;
 
-    // Small movement (< 8px) is a click to open video
     if (Math.abs(delta) < 8) {
-      handleCardClick(PROJECTS[activeIndex]);
-    } else if (delta < -45) {
-      // Swiped UP -> Next Card
+      handleCardClick(PROJECTS[current]);
+    } else if (delta < -45 && current < total - 1) {
       nextCard();
-    } else if (delta > 45) {
-      // Swiped DOWN -> Previous Card
+    } else if (delta > 45 && current > 0) {
       prevCard();
     }
     setDragY(0);
@@ -234,20 +316,18 @@ export default function Projects() {
         {/* APPLE WALLET CARD STACK CONTAINER */}
         <div
           ref={stackRef}
-          className="relative w-full h-[460px] sm:h-[500px] lg:h-[530px] my-2 flex items-center justify-center cursor-pointer active:cursor-grabbing touch-pan-y"
-          onMouseDown={handleTouchStart}
-          onMouseMove={handleTouchMove}
-          onMouseUp={handleTouchEnd}
+          className="relative w-full h-[460px] sm:h-[500px] lg:h-[530px] my-2 flex items-center justify-center cursor-pointer active:cursor-grabbing"
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
           onMouseLeave={() => {
             if (isDragging) {
               setIsDragging(false);
               setDragY(0);
             }
           }}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
           data-cursor="WATCH"
+          style={{ touchAction: 'pan-x' }}
         >
           {PROJECTS.map((project, index) => {
             const isPassed = index < activeIndex;
@@ -281,6 +361,7 @@ export default function Projects() {
             return (
               <div
                 key={project.number}
+                onClick={() => isFront && handleCardClick(project)}
                 className={`absolute inset-0 w-full h-full rounded-[28px] sm:rounded-[34px] p-6 sm:p-10 lg:p-12 flex flex-col justify-between shadow-2xl transition-all duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] select-none will-change-transform ${
                   isFront ? 'cursor-pointer hover:shadow-3xl' : 'pointer-events-none'
                 }`}
@@ -409,7 +490,7 @@ export default function Projects() {
           </div>
 
           <div className="opacity-70 text-[11px]">
-            <span>SCROLL ON CARDS OR USE ARROWS</span>
+            <span>SWIPE ON CARDS OR USE ARROWS</span>
           </div>
 
         </div>
