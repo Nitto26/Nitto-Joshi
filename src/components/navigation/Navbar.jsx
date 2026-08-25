@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -69,7 +69,7 @@ export default function Navbar() {
         }}
       >
         <div className="max-w-7xl mx-auto px-6 sm:px-12 flex items-center justify-between">
-          {/* Logo matching Reference 1 */}
+          {/* Logo */}
           <a
             href="#hero"
             onClick={(e) => handleLinkClick(e, '#hero')}
@@ -84,39 +84,39 @@ export default function Navbar() {
             </span>
           </a>
 
-          {/* Desktop Navigation Links matching Reference 1 */}
-          <div className="flex items-center gap-8 lg:gap-12">
-            <nav className="hidden md:flex items-center gap-8 lg:gap-10">
-              {navLinks.map((link) => {
-                const isActive = activeSection === link.href.replace('#', '');
-                return (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    onClick={(e) => handleLinkClick(e, link.href)}
-                    data-cursor="GOTO"
-                    className={`text-xs font-mono font-bold tracking-[0.15em] transition-all duration-200 relative py-1 ${
-                      isActive ? 'text-[#0C0C0E]' : 'text-[#0C0C0E]/70 hover:text-[#0C0C0E]'
-                    }`}
-                    style={{
-                      fontFamily: "'Space Grotesk', monospace",
-                      letterSpacing: '0.15em',
-                      textDecoration: 'none'
-                    }}
-                  >
-                    {link.name}
-                    {isActive && (
-                      <span
-                        className="absolute bottom-0 left-0 w-full h-[2px] bg-[#0C0C0E]"
-                        style={{ height: '2px', backgroundColor: '#0C0C0E' }}
-                      />
-                    )}
-                  </a>
-                );
-              })}
-            </nav>
+          {/* Desktop Navigation: Links only (NO menu button on desktop) */}
+          <nav className="hidden md:flex items-center gap-8 lg:gap-12">
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.href.replace('#', '');
+              return (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  onClick={(e) => handleLinkClick(e, link.href)}
+                  data-cursor="GOTO"
+                  className={`text-xs font-mono font-bold tracking-[0.15em] transition-all duration-200 relative py-1 ${
+                    isActive ? 'text-[#0C0C0E]' : 'text-[#0C0C0E]/70 hover:text-[#0C0C0E]'
+                  }`}
+                  style={{
+                    fontFamily: "'Space Grotesk', monospace",
+                    letterSpacing: '0.15em',
+                    textDecoration: 'none'
+                  }}
+                >
+                  {link.name}
+                  {isActive && (
+                    <span
+                      className="absolute bottom-0 left-0 w-full h-[2px] bg-[#0C0C0E]"
+                      style={{ height: '2px', backgroundColor: '#0C0C0E' }}
+                    />
+                  )}
+                </a>
+              );
+            })}
+          </nav>
 
-            {/* Circular Hamburger Menu Button matching Reference 1 */}
+          {/* Mobile Only: Circular Hamburger Menu Button */}
+          <div className="md:hidden flex items-center">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               data-cursor="MENU"
@@ -140,10 +140,10 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Mobile / Fullscreen Drawer Overlay */}
+      {/* Mobile Drawer Overlay */}
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 z-50 bg-[#0C0C0E]/96 text-white flex flex-col justify-between p-8 sm:p-12 transition-opacity duration-300 backdrop-blur-xl animate-fadeIn"
+          className="fixed inset-0 z-50 bg-[#0C0C0E]/96 text-white flex flex-col justify-between p-8 sm:p-12 md:hidden transition-opacity duration-300 backdrop-blur-xl animate-fadeIn"
           style={{
             position: 'fixed',
             inset: 0,

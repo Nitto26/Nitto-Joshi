@@ -55,7 +55,7 @@ export default function About() {
 
       {/* Top Header Bar */}
       <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2">
-        
+
         {/* Top Left: Random Simple Design */}
         <div className="flex items-center gap-6 text-xs sm:text-sm font-sans tracking-wide text-[#0C0C0E]/80 pl-6 sm:pl-8">
           <span>Random</span>
@@ -85,7 +85,7 @@ export default function About() {
 
       {/* Middle Main Content Block */}
       <div className="relative z-10 w-full max-w-7xl mx-auto my-auto py-4 sm:py-6">
-        
+
         {/* Section Eyebrow: ABOUT ME with line */}
         <div className="flex items-center gap-3 mb-4 pl-6 sm:pl-8">
           <span className="text-xs font-mono font-bold tracking-[0.25em] text-[#0C0C0E] uppercase">
@@ -95,7 +95,7 @@ export default function About() {
         </div>
 
         <div className="max-w-2xl pl-6 sm:pl-8">
-          
+
           <p className="text-xl sm:text-2xl font-sans font-bold text-[#0C0C0E] mb-1">
             Hi, I’m
           </p>
@@ -118,7 +118,7 @@ export default function About() {
             }}
           >
             <span className="block">NITTO</span>
-            <span className="block">JOSHI.</span>
+            <span className="block">JOSHI</span>
           </h2>
 
           {/* Roles Subtitle matching Reference */}
@@ -146,7 +146,7 @@ export default function About() {
 
         {/* Academic Stats Row matching Reference */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 mt-8 pt-6 pl-6 sm:pl-8 max-w-3xl">
-          
+
           {/* 95.5% 12th Grade */}
           <div className="flex flex-col">
             <span
@@ -192,7 +192,7 @@ export default function About() {
 
       {/* Bottom 4 Feature Items Bar matching Reference */}
       <div className="relative z-10 w-full max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-6 border-t border-black/15">
-        
+
         <div className="flex items-center gap-3 p-3.5 rounded-xl bg-[#EDE6DA]/75 backdrop-blur-sm border border-black/10 shadow-xs">
           <div className="w-9 h-9 rounded-lg bg-black/5 flex items-center justify-center shrink-0 text-[#0C0C0E]">
             <Code size={16} />

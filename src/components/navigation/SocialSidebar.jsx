@@ -53,6 +53,7 @@ export default function SocialSidebar() {
       case 'youtube':
         return <YoutubeIcon size={16} />;
       case 'email':
+      case 'mail':
         return <Mail size={16} />;
       default:
         return <Mail size={16} />;
@@ -62,17 +63,6 @@ export default function SocialSidebar() {
   return (
     <aside
       className="hidden lg:flex fixed left-6 xl:left-8 top-1/2 -translate-y-1/2 flex-col items-center gap-4 z-30 pointer-events-auto"
-      style={{
-        position: 'fixed',
-        left: '2rem',
-        top: '50%',
-        transform: 'translateY(-50%)',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '0.85rem',
-        zIndex: 30
-      }}
       aria-label="Social connections"
     >
       {PERSONAL_INFO.socials.map((social, index) => (
@@ -83,18 +73,13 @@ export default function SocialSidebar() {
             rel="noopener noreferrer"
             data-cursor={social.name.toUpperCase()}
             aria-label={`Nitto Joshi on ${social.name}`}
-            className="w-8 h-8 rounded-full flex items-center justify-center text-[#0C0C0E]/70 hover:text-[#2E828F] hover:scale-115 transition-all duration-200 group relative"
-            style={{
-              textDecoration: 'none',
-              color: '#0C0C0E'
-            }}
+            className="w-8 h-8 rounded-full flex items-center justify-center text-[#0C0C0E]/70 hover:text-[#2E828F] hover:scale-115 transition-all duration-200 group relative no-underline"
           >
             {getIcon(social.name)}
           </a>
           {index < PERSONAL_INFO.socials.length - 1 && (
             <div
               className="w-[1px] h-4 bg-black/25"
-              style={{ width: '1px', height: '1rem', backgroundColor: 'rgba(12, 12, 14, 0.25)' }}
             />
           )}
         </React.Fragment>

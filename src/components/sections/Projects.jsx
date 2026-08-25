@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { ArrowUpRight, X, ChevronUp, ChevronDown, Cpu, CheckCircle2 } from 'lucide-react';
+import { ArrowUpRight, ChevronUp, ChevronDown, Play } from 'lucide-react';
 
-const PROJECTS = [
+export const PROJECTS = [
   {
     number: '01',
     name: 'SGS APP',
@@ -10,13 +10,7 @@ const PROJECTS = [
     description: 'Geo-fence attendance app that automatically marks attendance using location-based logic.',
     role: 'App Developer & Logic Builder',
     technologies: ['KOTLIN', 'FASTAPI', 'GEOFENCING', 'API'],
-    whatIBuilt: 'A cross-platform application for automatic attendance marking and its underlying geofence logic verification.',
-    features: [
-      'Automated location boundary detection with sub-300ms verification',
-      'Lightweight FastAPI microservice endpoints with high concurrency',
-      'Anti-spoofing and secure coordinate validation logic',
-      'Seamless real-time device check-in workflows'
-    ],
+    videoUrl: 'https://youtube.com', // Video Link Variable: Replace with your project video URL
     cardBg: '#DCE7E7',
     textColor: '#0C0C0E'
   },
@@ -28,13 +22,7 @@ const PROJECTS = [
     description: 'Laboratory management system designed to organize laboratory resources and simplify chemical inventory operations.',
     role: 'Lead Developer',
     technologies: ['WEB DEV', 'DATABASE', 'SYSTEM DESIGN'],
-    whatIBuilt: 'Full relational database schema, administrative portal, student request workflows, and chemical stock tracking.',
-    features: [
-      'Comprehensive reagent & glassware digital inventory tracking',
-      'Hazard level categorization and shelf-life expiration alerts',
-      'Role-based access control for students, faculty, and lab managers',
-      'Auditing log for chemical consumption and requisition requests'
-    ],
+    videoUrl: 'https://youtube.com', // Video Link Variable: Replace with your project video URL
     cardBg: '#F3ECE2',
     textColor: '#0C0C0E'
   },
@@ -46,13 +34,7 @@ const PROJECTS = [
     description: 'An automated timetable creation system focused on constraint satisfaction logic and reducing academic conflicts.',
     role: 'Developer & Logic Builder',
     technologies: ['AUTOMATION', 'SCHEDULING', 'LOGIC'],
-    whatIBuilt: 'Constraint satisfaction engine, faculty workload balancer, and conflict-free schedule matrices.',
-    features: [
-      'Multi-variable constraint resolution (faculty hours, lab rooms, credits)',
-      'Algorithmic conflict prevention reducing scheduling time from days to seconds',
-      'Interactive matrix view with drag-and-adjust validation',
-      'Exportable department and student timetable sheets'
-    ],
+    videoUrl: 'https://youtube.com', // Video Link Variable: Replace with your project video URL
     cardBg: '#E2ECF0',
     textColor: '#0C0C0E'
   },
@@ -64,13 +46,7 @@ const PROJECTS = [
     description: 'An interactive web project based around cryptic puzzles, clues, exploration and game-like interactions.',
     role: 'Developer & Game Architect',
     technologies: ['WEB', 'GAME LOGIC', 'INTERACTIVE UI'],
-    whatIBuilt: 'Multi-stage clue progression engine, cipher validation interfaces, and session state tracking.',
-    features: [
-      'Multi-stage interactive puzzle progression with cryptographic riddles',
-      'Dynamic clue unlocking mechanism responding to user inputs',
-      'Real-time team leaderboard and stage timers',
-      'Engaging interactive animations and mystery game feedback'
-    ],
+    videoUrl: 'https://youtube.com', // Video Link Variable: Replace with your project video URL
     cardBg: '#E9E4DC',
     textColor: '#0C0C0E'
   },
@@ -82,13 +58,7 @@ const PROJECTS = [
     description: 'A scheduling and booking website designed around a simple, clean, and frictionless user experience.',
     role: 'Developer & UI Designer',
     technologies: ['WEB', 'UI/UX', 'SCHEDULING'],
-    whatIBuilt: 'Interactive visual calendar picker, real-time availability indicator, and frictionless booking flow.',
-    features: [
-      'Instant slot allocation preventing concurrent double-booking',
-      'Minimalist, frictionless step-by-step reservation workflow',
-      'Automated confirmation notifications and calendar syncing',
-      'Responsive design crafted for one-thumb mobile booking'
-    ],
+    videoUrl: 'https://youtube.com', // Video Link Variable: Replace with your project video URL
     cardBg: '#D8E4E8',
     textColor: '#0C0C0E'
   },
@@ -100,13 +70,7 @@ const PROJECTS = [
     description: 'A responsive departmental web portal developed for an institutional showcase with a clean interface.',
     role: 'Web Developer',
     technologies: ['HTML', 'CSS', 'JAVASCRIPT', 'UI/UX'],
-    whatIBuilt: 'Departmental portal layout, structured curriculum directory, and accessible responsive web components.',
-    features: [
-      'Semantic and fast-loading web architecture with 100/100 Lighthouse score',
-      'Structured resource repository for academic materials and notices',
-      'Mobile-first responsive interface with intuitive navigation hierarchy',
-      'Clean typography adhering to institutional branding'
-    ],
+    videoUrl: 'https://youtube.com', // Video Link Variable: Replace with your project video URL
     cardBg: '#EDE7DE',
     textColor: '#0C0C0E'
   }
@@ -114,13 +78,13 @@ const PROJECTS = [
 
 export default function Projects() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [expandedIndex, setExpandedIndex] = useState(null);
   const [dragY, setDragY] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
 
   const startYRef = useRef(0);
   const currentYRef = useRef(0);
   const stackRef = useRef(null);
+  const isScrollingCardsRef = useRef(false);
 
   const total = PROJECTS.length;
 
@@ -132,25 +96,69 @@ export default function Projects() {
     setActiveIndex((prev) => Math.max(0, prev - 1));
   }, []);
 
-  // Keyboard navigation & accessibility
+  // Handle direct video link click
+  const handleCardClick = (project) => {
+    if (project.videoUrl) {
+      window.open(project.videoUrl, '_blank', 'noopener,noreferrer');
+    }
+  };
+
+  // Dedicated Card Stack Scroll Hijack:
+  // When user scrolls on top of the cards, cycle through the cards until bounds
+  useEffect(() => {
+    const el = stackRef.current;
+    if (!el) return;
+
+    const onWheel = (e) => {
+      // Check delta
+      if (Math.abs(e.deltaY) < 15) return;
+
+      if (e.deltaY > 0) {
+        // Scrolling DOWN
+        if (activeIndex < total - 1) {
+          e.preventDefault(); // Stop main page from scrolling
+          if (!isScrollingCardsRef.current) {
+            isScrollingCardsRef.current = true;
+            nextCard();
+            setTimeout(() => {
+              isScrollingCardsRef.current = false;
+            }, 380);
+          }
+        }
+      } else if (e.deltaY < 0) {
+        // Scrolling UP
+        if (activeIndex > 0) {
+          e.preventDefault(); // Stop main page from scrolling
+          if (!isScrollingCardsRef.current) {
+            isScrollingCardsRef.current = true;
+            prevCard();
+            setTimeout(() => {
+              isScrollingCardsRef.current = false;
+            }, 380);
+          }
+        }
+      }
+    };
+
+    el.addEventListener('wheel', onWheel, { passive: false });
+    return () => el.removeEventListener('wheel', onWheel);
+  }, [activeIndex, total, nextCard, prevCard]);
+
+  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (expandedIndex !== null) {
-        if (e.key === 'Escape') setExpandedIndex(null);
-        return;
-      }
+      if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
       if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') prevCard();
       if (e.key === 'ArrowDown' || e.key === 'ArrowRight') nextCard();
-      if (e.key === 'Enter' || e.key === ' ') setExpandedIndex(activeIndex);
+      if (e.key === 'Enter') handleCardClick(PROJECTS[activeIndex]);
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeIndex, expandedIndex, nextCard, prevCard]);
+  }, [activeIndex, nextCard, prevCard]);
 
   // Touch / Mouse Drag Gesture Handling
   const handleTouchStart = (e) => {
-    if (expandedIndex !== null) return;
     const clientY = e.touches ? e.touches[0].clientY : e.clientY;
     startYRef.current = clientY;
     currentYRef.current = clientY;
@@ -158,7 +166,7 @@ export default function Projects() {
   };
 
   const handleTouchMove = (e) => {
-    if (!isDragging || expandedIndex !== null) return;
+    if (!isDragging) return;
     const clientY = e.touches ? e.touches[0].clientY : e.clientY;
     currentYRef.current = clientY;
     const delta = clientY - startYRef.current;
@@ -166,13 +174,13 @@ export default function Projects() {
   };
 
   const handleTouchEnd = () => {
-    if (!isDragging || expandedIndex !== null) return;
+    if (!isDragging) return;
     setIsDragging(false);
     const delta = currentYRef.current - startYRef.current;
 
-    // Small movement (< 8px) is a tap / click to open details
+    // Small movement (< 8px) is a click to open video
     if (Math.abs(delta) < 8) {
-      setExpandedIndex(activeIndex);
+      handleCardClick(PROJECTS[activeIndex]);
     } else if (delta < -45) {
       // Swiped UP -> Next Card
       nextCard();
@@ -191,7 +199,7 @@ export default function Projects() {
     >
       <div className="max-w-[1240px] mx-auto flex flex-col justify-between">
         
-        {/* Section Header matching Reference */}
+        {/* Section Header */}
         <div className="w-full flex flex-col sm:flex-row sm:items-end justify-between gap-3 pb-6 mb-8 sm:mb-10 border-b border-black/[0.12]">
           <div>
             <span
@@ -214,7 +222,7 @@ export default function Projects() {
 
           <div className="flex items-center gap-6 sm:pb-1">
             <p className="text-xs sm:text-sm font-sans text-[#0C0C0E]/80 max-w-xs sm:text-right">
-              Swipe through the stack. Tap a project to explore it.
+              Scroll on the cards to cycle. Click card to watch project video.
             </p>
             
             <div className="hidden lg:flex w-20 h-10 rounded-full border border-black/25 items-center justify-center text-[#0C0C0E]">
@@ -223,10 +231,10 @@ export default function Projects() {
           </div>
         </div>
 
-        {/* APPLE WALLET CARD STACK CONTAINER — Tight & cleanly sized */}
+        {/* APPLE WALLET CARD STACK CONTAINER */}
         <div
           ref={stackRef}
-          className="relative w-full h-[460px] sm:h-[500px] lg:h-[530px] my-2 flex items-center justify-center cursor-grab active:cursor-grabbing touch-pan-y"
+          className="relative w-full h-[460px] sm:h-[500px] lg:h-[530px] my-2 flex items-center justify-center cursor-pointer active:cursor-grabbing touch-pan-y"
           onMouseDown={handleTouchStart}
           onMouseMove={handleTouchMove}
           onMouseUp={handleTouchEnd}
@@ -239,16 +247,13 @@ export default function Projects() {
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
+          data-cursor="WATCH"
         >
           {PROJECTS.map((project, index) => {
             const isPassed = index < activeIndex;
             const isFront = index === activeIndex;
             const offset = index - activeIndex;
 
-            // Apple Wallet Motion:
-            // Passed cards slide UP & OUT (-120%)
-            // Front card is at 0px / scale 1
-            // Waiting cards stacked below with 18px offset
             let translateY = 0;
             let scale = 1;
             let opacity = 1;
@@ -276,7 +281,6 @@ export default function Projects() {
             return (
               <div
                 key={project.number}
-                onClick={() => isFront && setExpandedIndex(index)}
                 className={`absolute inset-0 w-full h-full rounded-[28px] sm:rounded-[34px] p-6 sm:p-10 lg:p-12 flex flex-col justify-between shadow-2xl transition-all duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] select-none will-change-transform ${
                   isFront ? 'cursor-pointer hover:shadow-3xl' : 'pointer-events-none'
                 }`}
@@ -294,9 +298,9 @@ export default function Projects() {
                 }}
                 role="button"
                 tabIndex={isFront ? 0 : -1}
-                aria-label={`Project ${project.number}: ${project.name}`}
+                aria-label={`Project ${project.number}: ${project.name} - Click to watch video`}
               >
-                {/* Top Category Header & Top-Right Expand Arrow */}
+                {/* Top Category Header & Watch Video Pill */}
                 <div className="flex items-center justify-between pb-2">
                   <span
                     className="text-xs sm:text-sm font-mono font-bold tracking-[0.25em] opacity-80 uppercase"
@@ -305,8 +309,9 @@ export default function Projects() {
                     {project.number} / {project.category}
                   </span>
 
-                  <div className="w-9 h-9 rounded-full border border-black/20 flex items-center justify-center opacity-80 bg-white/40">
-                    <ArrowUpRight size={15} />
+                  <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-black/20 bg-white/50 text-xs font-mono font-bold tracking-wider group-hover:bg-[#0C0C0E] group-hover:text-white transition-colors">
+                    <Play size={12} className="fill-current" />
+                    <span>WATCH VIDEO ↗</span>
                   </div>
                 </div>
 
@@ -404,137 +409,12 @@ export default function Projects() {
           </div>
 
           <div className="opacity-70 text-[11px]">
-            <span>SWIPE OR USE ARROWS</span>
+            <span>SCROLL ON CARDS OR USE ARROWS</span>
           </div>
 
         </div>
 
       </div>
-
-      {/* EXPANDED PROJECT DETAIL MODAL */}
-      {expandedIndex !== null && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10 bg-black/75 backdrop-blur-md transition-opacity animate-fadeIn"
-          onClick={() => setExpandedIndex(null)}
-          role="dialog"
-          aria-modal="true"
-        >
-          <div
-            className="relative w-full max-w-3xl max-h-[90vh] bg-[#FAF9F6] text-[#0C0C0E] rounded-3xl shadow-2xl overflow-y-auto border border-black/15 p-6 sm:p-10 flex flex-col justify-between"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Top Bar */}
-            <div className="flex items-center justify-between pb-6 mb-6 border-b border-black/10">
-              <div className="flex items-center gap-3">
-                <span
-                  className="text-2xl sm:text-3xl font-black font-display text-[#2E828F]"
-                  style={{ fontFamily: "'Oswald', sans-serif" }}
-                >
-                  PROJECT {PROJECTS[expandedIndex].number}
-                </span>
-                <span className="px-3 py-1 text-xs font-mono font-semibold rounded-full bg-black/5 text-[#0C0C0E]/80 border border-black/10">
-                  {PROJECTS[expandedIndex].status}
-                </span>
-              </div>
-
-              <button
-                onClick={() => setExpandedIndex(null)}
-                data-cursor="CLOSE"
-                aria-label="Close project details"
-                className="w-10 h-10 rounded-full bg-black/5 hover:bg-[#0C0C0E] hover:text-white flex items-center justify-center transition-colors"
-              >
-                <X size={18} />
-              </button>
-            </div>
-
-            {/* Title & Description */}
-            <div className="mb-6">
-              <span className="text-xs font-mono tracking-widest text-[#2E828F] font-bold uppercase">
-                {PROJECTS[expandedIndex].category}
-              </span>
-              <h3
-                className="text-3xl sm:text-4xl md:text-5xl font-black font-display tracking-tight text-[#0C0C0E] mt-1 uppercase leading-[0.95]"
-                style={{ fontFamily: "'Oswald', 'Syne', sans-serif" }}
-              >
-                {PROJECTS[expandedIndex].name}
-              </h3>
-              <p className="text-sm font-sans text-[#0C0C0E]/80 mt-3 leading-relaxed">
-                {PROJECTS[expandedIndex].description}
-              </p>
-            </div>
-
-            {/* Role & What Built */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <div className="p-5 rounded-2xl bg-[#F4EFEA] border border-black/10">
-                <p className="text-xs font-mono font-bold tracking-widest text-[#0C0C0E]/60 uppercase mb-1">
-                  MY ROLE
-                </p>
-                <p className="text-sm font-bold font-mono text-[#2E828F]">
-                  {PROJECTS[expandedIndex].role}
-                </p>
-              </div>
-
-              <div className="p-5 rounded-2xl bg-[#F4EFEA] border border-black/10">
-                <p className="text-xs font-mono font-bold tracking-widest text-[#0C0C0E]/60 uppercase mb-1">
-                  WHAT I BUILT
-                </p>
-                <p className="text-xs sm:text-sm font-sans text-[#0C0C0E]/85">
-                  {PROJECTS[expandedIndex].whatIBuilt}
-                </p>
-              </div>
-            </div>
-
-            {/* Features */}
-            {PROJECTS[expandedIndex].features && (
-              <div className="mb-6 p-6 rounded-2xl bg-white border border-black/10 shadow-xs">
-                <p className="text-xs font-mono font-bold tracking-widest text-[#0C0C0E] uppercase mb-3 flex items-center gap-2">
-                  <Cpu size={14} className="text-[#2E828F]" />
-                  KEY ARCHITECTURE & HIGHLIGHTS
-                </p>
-                <ul className="space-y-2">
-                  {PROJECTS[expandedIndex].features.map((feat, i) => (
-                    <li key={i} className="flex items-start gap-2.5 text-xs sm:text-sm font-sans text-[#0C0C0E]/80">
-                      <CheckCircle2 size={15} className="text-[#2E828F] shrink-0 mt-0.5" />
-                      <span>{feat}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* Technologies */}
-            <div className="mb-8">
-              <p className="text-xs font-mono font-bold tracking-widest text-[#0C0C0E]/60 uppercase mb-2">
-                TECHNOLOGIES
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {PROJECTS[expandedIndex].technologies.map((t) => (
-                  <span
-                    key={t}
-                    className="px-3.5 py-1.5 rounded-lg text-xs font-mono bg-[#0C0C0E] text-white tracking-wider font-semibold"
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Close Button Footer */}
-            <div className="pt-6 border-t border-black/10 flex items-center justify-between">
-              <span className="text-xs font-mono text-[#0C0C0E]/50">
-                PRESS ESC OR CLICK TO CLOSE
-              </span>
-              <button
-                onClick={() => setExpandedIndex(null)}
-                className="px-6 py-2.5 rounded-xl bg-[#0C0C0E] text-white text-xs font-mono tracking-widest font-semibold hover:bg-[#2E828F] transition-colors"
-              >
-                COLLAPSE CARD
-              </button>
-            </div>
-
-          </div>
-        </div>
-      )}
     </section>
   );
 }
