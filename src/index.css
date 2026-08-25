@@ -189,6 +189,29 @@ body {
   animation: dizzySpin 1.8s linear infinite;
 }
 
+/* Infinite Horizontal Streaming Ribbons */
+@keyframes streamLeft {
+  0% { transform: translate3d(0%, 0, 0); }
+  100% { transform: translate3d(-33.3333%, 0, 0); }
+}
+
+@keyframes streamRight {
+  0% { transform: translate3d(-33.3333%, 0, 0); }
+  100% { transform: translate3d(0%, 0, 0); }
+}
+
+.animate-stream-left {
+  animation: streamLeft 30s linear infinite;
+}
+
+.animate-stream-right {
+  animation: streamRight 30s linear infinite;
+}
+
+.animate-stream-left-slow {
+  animation: streamLeft 36s linear infinite;
+}
+
 /* Custom Cursor */
 .custom-cursor-dot {
   position: fixed;
@@ -266,7 +289,7 @@ body {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  .shake-active, .comic-pop, .dizzy-star {
+  .shake-active, .comic-pop, .dizzy-star, .animate-stream-left, .animate-stream-right {
     animation: none !important;
   }
 }

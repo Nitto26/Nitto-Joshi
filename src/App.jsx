@@ -8,9 +8,8 @@ import SocialSidebar from './components/navigation/SocialSidebar';
 
 import Hero from './components/sections/Hero';
 import About from './components/sections/About';
-import Projects from './components/sections/Projects';
 import LogicHighlight from './components/sections/LogicHighlight';
-import Experience from './components/sections/Experience';
+import Projects from './components/sections/Projects';
 import Competitions from './components/sections/Competitions';
 import Skills from './components/sections/Skills';
 import Services from './components/sections/Services';
@@ -34,9 +33,8 @@ export default function App() {
       <main id="main-content" className="relative z-10">
         <Hero />
         <About />
-        <Projects />
         <LogicHighlight />
-        <Experience />
+        <Projects />
         <Competitions />
         <Skills />
         <Services />

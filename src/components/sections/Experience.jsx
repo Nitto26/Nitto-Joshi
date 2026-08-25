@@ -1,5 +1,5 @@
 import React from 'react';
-import { Briefcase, Code, Terminal, Zap, Shield, Camera, Cpu } from 'lucide-react';
+import { Briefcase, Code, Terminal, Zap, Shield, Camera, Cpu, Layers } from 'lucide-react';
 import { EXPERIENCE_DATA } from '../../data/portfolioData';
 
 export default function Experience() {
@@ -15,10 +15,14 @@ export default function Experience() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 mb-16 border-b border-black/[0.12]">
           <div>
             <div className="flex items-center gap-3 mb-3">
-              <span className="text-xs font-mono font-bold tracking-[0.25em] text-[#2E828F] uppercase">
-                PRACTICAL TRACK RECORD ✦ SYSTEMS & PRODUCTION
+              <span
+                className="text-xs font-mono font-bold tracking-[0.25em] text-[#2E828F] uppercase"
+                style={{ fontFamily: "'Space Grotesk', monospace" }}
+              >
+                03 / PRACTICAL TRACK RECORD
               </span>
             </div>
+            
             <h2
               className="text-5xl sm:text-6xl md:text-7xl font-black font-display tracking-tight text-[#0C0C0E] leading-none"
               style={{ fontFamily: "'Oswald', 'Syne', sans-serif" }}
@@ -28,7 +32,7 @@ export default function Experience() {
           </div>
 
           <p className="text-xs sm:text-sm font-mono text-[#0C0C0E]/70 max-w-sm">
-            Hands-on development across institutional web systems, automated mobile apps, hardware deployments, and competitive hackathons.
+            Hands-on development across institutional web systems, automated mobile apps, hardware deployments, and technical projects.
           </p>
         </div>
 
@@ -47,10 +51,10 @@ export default function Experience() {
 
               {/* Items List */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {group.items.map((item, idx) => (
+                {group.items.map((item) => (
                   <div
                     key={item.title}
-                    className="p-6 sm:p-8 rounded-2xl bg-white/70 border border-black/10 hover:border-[#2E828F]/50 transition-all duration-300 hover:bg-white hover:shadow-md flex flex-col justify-between"
+                    className="p-6 sm:p-8 rounded-2xl bg-white/80 border border-black/10 hover:border-[#2E828F]/50 transition-all duration-300 hover:bg-white hover:shadow-md flex flex-col justify-between"
                   >
                     <div>
                       <div className="flex items-start justify-between gap-3 mb-2">
@@ -78,7 +82,7 @@ export default function Experience() {
                       {item.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="px-2 py-0.5 text-[10px] font-mono bg-black/5 text-[#0C0C0E]/80 rounded"
+                          className="px-2.5 py-1 text-[10px] font-mono bg-black/5 text-[#0C0C0E]/80 rounded"
                         >
                           {tag}
                         </span>

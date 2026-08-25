@@ -1,29 +1,51 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X } from 'lucide-react';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [visible, setVisible] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
+
+  const lastScrollYRef = useRef(0);
 
   const navLinks = [
     { name: 'ABOUT', href: '#about' },
     { name: 'PROJECTS', href: '#projects' },
-    { name: 'EXPERIENCE', href: '#experience' },
+    { name: 'ACHIEVEMENTS', href: '#achievements' },
+    { name: 'SKILLS', href: '#skills' },
     { name: 'CONTACT', href: '#contact' }
   ];
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 40) {
+      const currentScrollY = window.scrollY;
+
+      // Scrolled style threshold
+      if (currentScrollY > 40) {
         setScrolled(true);
       } else {
         setScrolled(false);
       }
 
+      // Smart Hide on Scroll:
+      // When at top (< 60px), always visible
+      if (currentScrollY < 60) {
+        setVisible(true);
+      } else {
+        // If scrolling down, hide navbar; if scrolling up, show navbar
+        if (currentScrollY > lastScrollYRef.current + 8) {
+          setVisible(false); // Hide on scroll down
+        } else if (currentScrollY < lastScrollYRef.current - 8) {
+          setVisible(true); // Re-appear on scroll up
+        }
+      }
+
+      lastScrollYRef.current = currentScrollY;
+
       // Detect active section
-      const sections = ['hero', 'about', 'projects', 'experience', 'skills', 'services', 'contact'];
-      const scrollPos = window.scrollY + 200;
+      const sections = ['hero', 'about', 'projects', 'achievements', 'skills', 'services', 'contact'];
+      const scrollPos = currentScrollY + 200;
 
       for (const sectionId of sections) {
         const el = document.getElementById(sectionId);
@@ -55,6 +77,8 @@ export default function Navbar() {
     <>
       <header
         className={`fixed top-0 left-0 w-full z-40 transition-all duration-300 ${
+          visible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'
+        } ${
           scrolled
             ? 'bg-[#FAF9F6]/90 backdrop-blur-md py-4 border-b border-black/[0.08] shadow-sm'
             : 'bg-transparent py-7 border-b border-transparent'
@@ -65,7 +89,7 @@ export default function Navbar() {
           left: 0,
           width: '100%',
           zIndex: 40,
-          transition: 'all 0.3s cubic-bezier(0.19, 1, 0.22, 1)'
+          transition: 'transform 0.35s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.25s ease, background-color 0.3s ease'
         }}
       >
         <div className="max-w-7xl mx-auto px-6 sm:px-12 flex items-center justify-between">
@@ -84,8 +108,8 @@ export default function Navbar() {
             </span>
           </a>
 
-          {/* Desktop Navigation: Links only (NO menu button on desktop) */}
-          <nav className="hidden md:flex items-center gap-8 lg:gap-12">
+          {/* Desktop Navigation: Links only */}
+          <nav className="hidden md:flex items-center gap-7 lg:gap-10">
             {navLinks.map((link) => {
               const isActive = activeSection === link.href.replace('#', '');
               return (
@@ -176,13 +200,13 @@ export default function Navbar() {
             </button>
           </div>
 
-          <nav className="flex flex-col gap-6 my-auto">
+          <nav className="flex flex-col gap-5 my-auto">
             {navLinks.map((link, idx) => (
               <a
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleLinkClick(e, link.href)}
-                className="text-4xl sm:text-5xl font-display font-extrabold tracking-tight text-white/90 hover:text-[#2E828F] transition-colors py-2 flex items-center justify-between border-b border-white/10"
+                className="text-3xl sm:text-4xl font-display font-extrabold tracking-tight text-white/90 hover:text-[#2E828F] transition-colors py-2 flex items-center justify-between border-b border-white/10"
                 style={{
                   fontFamily: "'Oswald', 'Syne', sans-serif",
                   textDecoration: 'none',

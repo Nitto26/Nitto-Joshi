@@ -8,4 +8,9 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  server: {
+    watch: {
+      ignored: ['**/*.mp4', '**/*.mov', '**/*.webm', '**/*.mkv', '**/*.avi', '**/.git/**']
+    }
+  }
 })
