@@ -1,12 +1,29 @@
-import React, { useState } from 'react';
-import { ArrowUpRight, Copy, Check, Send, Mail, MapPin, Sparkles } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { ArrowUpRight, Check, Copy, Mail, MapPin, Phone, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import lottie from 'lottie-web';
 import { PERSONAL_INFO } from '../../data/portfolioData';
+import stickmanAnimation from '../../assets/stickman.json';
 
 export default function Contact() {
   const [copied, setCopied] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState('');
+  const lottieRef = useRef(null);
+
+  useEffect(() => {
+    if (!lottieRef.current) return;
+
+    const anim = lottie.loadAnimation({
+      container: lottieRef.current,
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      animationData: stickmanAnimation,
+    });
+
+    return () => anim.destroy();
+  }, []);
 
   const copyEmail = () => {
     navigator.clipboard.writeText('nittojoshi@example.com');
@@ -22,184 +39,241 @@ export default function Contact() {
     }
 
     setStatus('Message registered! Thank you for reaching out.');
-    
+
     try {
       confetti({
-        particleCount: 30,
-        spread: 60,
-        origin: { y: 0.8 },
-        colors: ['#2E828F', '#0C0C0E', '#FAF9F6']
+        particleCount: 35,
+        spread: 65,
+        origin: { y: 0.75 },
+        colors: ['#2E828F', '#FFFFFF', '#141416']
       });
     } catch (e) {}
 
     setFormData({ name: '', email: '', message: '' });
-    setTimeout(() => setStatus(''), 4000);
+    setTimeout(() => setStatus(''), 4500);
   };
 
   return (
-    <section
-      id="contact"
-      className="py-24 sm:py-36 px-6 sm:px-10 lg:px-16 bg-[#0C0C0E] text-white relative overflow-hidden"
-    >
-      {/* Editorial stars in corners */}
-      <div className="absolute top-10 left-10 text-2xl text-white/20 select-none four-star">✦</div>
-      <div className="absolute bottom-10 right-10 text-2xl text-white/20 select-none four-star">✦</div>
+    <>
+      <style>{`
+        @keyframes walkLeftToRight {
+          0% {
+            transform: translateX(-200px);
+          }
+          100% {
+            transform: translateX(100vw);
+          }
+        }
+      `}</style>
 
-      <div className="max-w-7xl mx-auto">
-        
-        {/* Editorial Eyebrow */}
-        <div className="flex items-center gap-3 mb-6">
-          <span className="text-xs font-mono font-bold tracking-[0.3em] text-[#2E828F] uppercase">
-            COMMUNICATION & INQUIRIES
-          </span>
-          <div className="w-12 h-[1px] bg-[#2E828F]" />
-        </div>
+      <section
+        id="contact"
+        className="relative w-full h-screen min-h-[620px] max-h-[960px] bg-[#0A0A0C] text-white flex flex-col justify-between overflow-hidden select-none px-6 sm:px-12 lg:px-16 py-8 sm:py-10"
+      >
+        {/* Top Center Radial Glow Aura */}
+        <div
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-[550px] h-[300px] pointer-events-none opacity-35 blur-[90px]"
+          style={{
+            background: 'radial-gradient(circle, rgba(46, 130, 143, 0.45) 0%, rgba(10, 10, 12, 0) 70%)',
+          }}
+        />
 
-        {/* Large Editorial Headline */}
-        <div className="mb-16">
-          <h2
-            className="text-6xl sm:text-7xl md:text-8xl xl:text-9xl font-black font-display tracking-tight leading-[0.88] uppercase"
-            style={{
-              fontFamily: "'Oswald', 'Syne', sans-serif",
-              letterSpacing: '-0.02em'
-            }}
+        {/* Background Watermark Text "CONTACT" */}
+        <div className="absolute top-6 left-0 right-0 text-center pointer-events-none z-0">
+          <span
+            className="text-[11vw] sm:text-[13vw] font-black uppercase text-white/[0.03] tracking-widest leading-none block select-none"
+            style={{ fontFamily: "'Oswald', 'Syne', sans-serif" }}
           >
-            LET'S <span className="text-[#2E828F]">BUILD.</span>
-          </h2>
-
-          <p className="text-lg sm:text-2xl font-mono text-white/80 mt-6 max-w-2xl">
-            Have an idea, an engineering problem, or something worth creating?
-          </p>
+            CONTACT
+          </span>
         </div>
 
-        {/* Main Grid: Left Details & Socials + Right Interactive Form */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 pt-12 border-t border-white/10">
+        {/* Decorative Corner Lines */}
+        <div className="absolute top-8 left-8 w-20 h-20 border-t border-l border-white/10 pointer-events-none" />
+        <div className="absolute top-8 right-8 w-20 h-20 border-t border-r border-white/10 pointer-events-none" />
+
+        {/* Main 16:9 Section Content (Centered in Viewport) */}
+        <div className="max-w-6xl mx-auto w-full relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center my-auto">
           
-          {/* Left Details */}
-          <div className="lg:col-span-5 space-y-8">
+          {/* Left Column: Headline & Direct Contact Cards */}
+          <div className="lg:col-span-5 space-y-6">
             
+            {/* Eyebrow Pill Badge */}
             <div>
-              <p className="text-xs font-mono text-white/50 uppercase tracking-widest mb-1">
-                CONTACT PERSON
-              </p>
-              <h3 className="text-3xl font-black font-display text-white" style={{ fontFamily: "'Oswald', sans-serif" }}>
-                NITTO JOSHI
-              </h3>
-              <p className="text-sm font-mono text-[#2E828F] mt-0.5">
-                {PERSONAL_INFO.title}
-              </p>
-            </div>
-
-            <div className="flex items-center gap-3 text-sm font-mono text-white/80">
-              <MapPin size={16} className="text-[#2E828F]" />
-              <span>{PERSONAL_INFO.location}</span>
-            </div>
-
-            {/* Direct Copy Email Box */}
-            <div className="p-4 rounded-xl bg-white/[0.05] border border-white/10 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Mail size={16} className="text-[#2E828F]" />
-                <span className="text-xs sm:text-sm font-mono text-white select-all">
-                  nittojoshi@example.com
-                </span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] border border-white/12 text-xs font-mono font-medium text-white/80 backdrop-blur-md">
+                <Sparkles size={12} className="text-[#2E828F]" />
+                <span>Contact</span>
               </div>
-              <button
-                onClick={copyEmail}
-                data-cursor="COPY"
-                aria-label="Copy email address"
-                className="p-2 rounded-lg bg-white/10 hover:bg-[#2E828F] text-white transition-colors"
+            </div>
+
+            {/* Heading & Subtitle */}
+            <div className="space-y-2">
+              <h2
+                className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-white tracking-tight leading-tight"
+                style={{ fontFamily: "'Syne', sans-serif" }}
               >
-                {copied ? <Check size={14} className="text-green-400" /> : <Copy size={14} />}
-              </button>
+                Get in touch
+              </h2>
+              <p className="text-xs sm:text-sm font-sans text-white/60 leading-relaxed max-w-sm">
+                Have questions or ready to transform your ideas into exceptional software solutions?
+              </p>
             </div>
 
-            {/* Social Links List with placeholders */}
-            <div>
-              <p className="text-xs font-mono text-white/50 uppercase tracking-widest mb-3">
-                DIRECT CHANNELS
-              </p>
-              <div className="flex flex-wrap gap-3">
-                {PERSONAL_INFO.socials.map((s) => (
-                  <a
-                    key={s.name}
-                    href={s.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    data-cursor="VISIT"
-                    className="px-3.5 py-1.5 rounded-full bg-white/[0.06] border border-white/10 hover:border-[#2E828F] hover:text-[#2E828F] text-xs font-mono tracking-wider transition-colors inline-flex items-center gap-1.5"
-                    style={{ textDecoration: 'none', color: '#fff' }}
-                  >
-                    <span>{s.name}</span>
-                    <ArrowUpRight size={12} />
-                  </a>
-                ))}
+            {/* 3 Info Cards */}
+            <div className="space-y-3 pt-1">
+              
+              {/* Card 1: Email us */}
+              <div
+                onClick={copyEmail}
+                className="bg-[#121316]/90 border border-white/10 hover:border-[#2E828F]/60 rounded-xl p-3.5 flex items-center justify-between transition-all duration-300 group cursor-pointer shadow-lg backdrop-blur-xl"
+              >
+                <div className="flex items-center gap-3.5">
+                  <div className="w-9 h-9 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center text-white group-hover:border-[#2E828F] group-hover:text-[#2E828F] transition-all">
+                    <Mail size={16} />
+                  </div>
+                  <div>
+                    <h4 className="text-[10px] font-mono text-white/50 uppercase tracking-wider">Email us</h4>
+                    <p className="text-xs font-sans font-medium text-white group-hover:text-[#2E828F] transition-colors">
+                      nittojoshi@example.com
+                    </p>
+                  </div>
+                </div>
+
+                <div className="w-8 h-8 rounded-full bg-white/[0.06] flex items-center justify-center text-white/60 group-hover:text-white group-hover:bg-[#2E828F] transition-all">
+                  {copied ? <Check size={14} className="text-green-400" /> : <ArrowUpRight size={14} />}
+                </div>
               </div>
+
+              {/* Card 2: Call us / Direct */}
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-[#121316]/90 border border-white/10 hover:border-[#2E828F]/60 rounded-xl p-3.5 flex items-center justify-between transition-all duration-300 group cursor-pointer shadow-lg backdrop-blur-xl"
+                style={{ textDecoration: 'none' }}
+              >
+                <div className="flex items-center gap-3.5">
+                  <div className="w-9 h-9 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center text-white group-hover:border-[#2E828F] group-hover:text-[#2E828F] transition-all">
+                    <Phone size={16} />
+                  </div>
+                  <div>
+                    <h4 className="text-[10px] font-mono text-white/50 uppercase tracking-wider">Direct channel</h4>
+                    <p className="text-xs font-sans font-medium text-white group-hover:text-[#2E828F] transition-colors">
+                      LinkedIn / GitHub (@nittojoshi)
+                    </p>
+                  </div>
+                </div>
+
+                <div className="w-8 h-8 rounded-full bg-white/[0.06] flex items-center justify-center text-white/60 group-hover:text-white group-hover:bg-[#2E828F] transition-all">
+                  <ArrowUpRight size={14} />
+                </div>
+              </a>
+
+              {/* Card 3: Our location */}
+              <div className="bg-[#121316]/90 border border-white/10 hover:border-[#2E828F]/60 rounded-xl p-3.5 flex items-center justify-between transition-all duration-300 group shadow-lg backdrop-blur-xl">
+                <div className="flex items-center gap-3.5">
+                  <div className="w-9 h-9 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center text-white group-hover:border-[#2E828F] group-hover:text-[#2E828F] transition-all">
+                    <MapPin size={16} />
+                  </div>
+                  <div>
+                    <h4 className="text-[10px] font-mono text-white/50 uppercase tracking-wider">Our location</h4>
+                    <p className="text-xs font-sans font-medium text-white">
+                      {PERSONAL_INFO.location}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="w-8 h-8 rounded-full bg-white/[0.06] flex items-center justify-center text-white/60 group-hover:text-white group-hover:bg-[#2E828F] transition-all">
+                  <ArrowUpRight size={14} />
+                </div>
+              </div>
+
             </div>
 
           </div>
 
-          {/* Right Interactive Form */}
+          {/* Right Column: Compact Glassmorphic Interactive Form */}
           <div className="lg:col-span-7">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-xs font-mono text-white/60 uppercase tracking-wider mb-2">
-                  YOUR NAME
-                </label>
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="e.g. Maya Chen"
-                  className="w-full px-4 py-3.5 rounded-xl bg-white/[0.05] border border-white/15 text-white placeholder-white/30 text-sm font-sans focus:outline-none focus:border-[#2E828F] transition-colors"
-                />
-              </div>
+            <div className="bg-[#121316]/90 border border-white/10 rounded-[24px] p-5 sm:p-7 md:p-8 shadow-2xl backdrop-blur-xl">
+              <form onSubmit={handleSubmit} className="space-y-3.5">
+                
+                {/* Name Input */}
+                <div>
+                  <input
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    placeholder="Name"
+                    className="w-full px-4 py-3 rounded-lg bg-[#1A1B1F] border border-white/10 text-white placeholder-white/40 text-xs sm:text-sm font-sans focus:outline-none focus:border-[#2E828F] focus:ring-1 focus:ring-[#2E828F] transition-all"
+                  />
+                </div>
 
-              <div>
-                <label className="block text-xs font-mono text-white/60 uppercase tracking-wider mb-2">
-                  EMAIL ADDRESS
-                </label>
-                <input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder="e.g. maya@example.com"
-                  className="w-full px-4 py-3.5 rounded-xl bg-white/[0.05] border border-white/15 text-white placeholder-white/30 text-sm font-sans focus:outline-none focus:border-[#2E828F] transition-colors"
-                />
-              </div>
+                {/* Email Input */}
+                <div>
+                  <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder="Email"
+                    className="w-full px-4 py-3 rounded-lg bg-[#1A1B1F] border border-white/10 text-white placeholder-white/40 text-xs sm:text-sm font-sans focus:outline-none focus:border-[#2E828F] focus:ring-1 focus:ring-[#2E828F] transition-all"
+                  />
+                </div>
 
-              <div>
-                <label className="block text-xs font-mono text-white/60 uppercase tracking-wider mb-2">
-                  PROJECT / MESSAGE
-                </label>
-                <textarea
-                  rows={4}
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  placeholder="Tell me about the problem, vision, or system you want to build..."
-                  className="w-full px-4 py-3.5 rounded-xl bg-white/[0.05] border border-white/15 text-white placeholder-white/30 text-sm font-sans focus:outline-none focus:border-[#2E828F] transition-colors resize-none"
-                />
-              </div>
+                {/* Message Textarea */}
+                <div>
+                  <textarea
+                    rows={4}
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    placeholder="Message"
+                    className="w-full px-4 py-3 rounded-lg bg-[#1A1B1F] border border-white/10 text-white placeholder-white/40 text-xs sm:text-sm font-sans focus:outline-none focus:border-[#2E828F] focus:ring-1 focus:ring-[#2E828F] transition-all resize-none"
+                  />
+                </div>
 
-              <button
-                type="submit"
-                data-cursor="SEND"
-                className="w-full py-4 rounded-xl bg-[#2E828F] text-white font-mono text-xs sm:text-sm font-bold tracking-widest uppercase hover:bg-[#256c77] transition-all flex items-center justify-center gap-2 shadow-lg"
-              >
-                <span>TRANSMIT MESSAGE</span>
-                <Send size={15} />
-              </button>
+                {/* Submit Button */}
+                <div className="pt-1">
+                  <button
+                    type="submit"
+                    className="w-full py-3.5 rounded-xl bg-white text-black font-sans text-xs sm:text-sm font-bold tracking-wide hover:bg-white/90 active:scale-[0.99] transition-all duration-200 shadow-xl cursor-pointer"
+                  >
+                    Submit
+                  </button>
+                </div>
 
-              {status && (
-                <p className="text-xs font-mono text-[#2E828F] text-center pt-2 animate-fadeIn">
-                  {status}
-                </p>
-              )}
-            </form>
+                {/* Status Indicator */}
+                {status && (
+                  <p className="text-xs font-mono text-[#2E828F] text-center pt-1 animate-fadeIn">
+                    {status}
+                  </p>
+                )}
+
+              </form>
+            </div>
           </div>
 
         </div>
 
-      </div>
-    </section>
+        {/* Larger Walking Stickman Animation aligned precisely at bottom screen edge */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '0px',
+            left: '0px',
+            width: '165px',
+            height: '98px',
+            pointerEvents: 'none',
+            zIndex: 30,
+            animation: 'walkLeftToRight 18s linear infinite',
+            willChange: 'transform',
+          }}
+        >
+          <div
+            ref={lottieRef}
+            style={{ width: '100%', height: '100%' }}
+          />
+        </div>
+
+      </section>
+    </>
   );
 }
