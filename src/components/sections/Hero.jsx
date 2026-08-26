@@ -86,7 +86,7 @@ export default function Hero() {
     <section
       id="hero"
       ref={containerRef}
-      className="relative min-h-screen flex flex-col justify-between pt-20 pb-0 sm:pt-24 sm:pb-12 px-6 sm:px-12 lg:px-24 overflow-hidden bg-[#FAF9F6]"
+      className="relative min-h-screen flex flex-col justify-between pt-20 pb-0 sm:pt-24 sm:pb-12 px-6 sm:px-12 lg:px-24 overflow-visible z-20 bg-[#FAF9F6]"
       style={{
         backgroundColor: '#FAF9F6',
         minHeight: '100vh',
@@ -215,7 +215,7 @@ export default function Hero() {
 
           {/* Cutout PNG Container */}
           <div
-            className={`relative w-full max-w-[290px] xs:max-w-[340px] sm:max-w-[460px] lg:max-w-[540px] flex items-end justify-center cursor-pointer select-none transition-transform duration-300 z-10 ${
+            className={`relative w-full max-w-[290px] xs:max-w-[340px] sm:max-w-[460px] lg:max-w-[540px] flex items-end justify-center cursor-pointer select-none transition-transform duration-300 z-30 translate-y-4 sm:translate-y-0 ${
               isHit ? 'shake-active' : ''
             }`}
             style={{

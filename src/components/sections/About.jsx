@@ -6,7 +6,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="relative w-full min-h-screen bg-[#EDE6DA] text-[#0C0C0E] border-t border-b border-black/[0.08] select-none flex flex-col justify-between p-4 sm:p-10 lg:p-14 overflow-hidden"
+      className="relative z-10 w-full min-h-screen bg-[#EDE6DA] text-[#0C0C0E] border-t border-b border-black/[0.08] select-none flex flex-col justify-between p-4 sm:p-10 lg:p-14 overflow-hidden"
       style={{
         backgroundColor: '#EDE6DA',
         minHeight: '100vh',

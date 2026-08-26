@@ -64,6 +64,22 @@ export default function Contact() {
             transform: translateX(100vw);
           }
         }
+
+        .walking-stickman-anim {
+          animation: walkLeftToRight 7s linear infinite;
+        }
+
+        @media (min-width: 640px) {
+          .walking-stickman-anim {
+            animation-duration: 11s;
+          }
+        }
+
+        @media (min-width: 1024px) {
+          .walking-stickman-anim {
+            animation-duration: 15s;
+          }
+        }
       `}</style>
 
       <section
@@ -255,6 +271,7 @@ export default function Contact() {
 
         {/* Larger Walking Stickman Animation aligned precisely at bottom screen edge */}
         <div
+          className="walking-stickman-anim"
           style={{
             position: 'absolute',
             bottom: '0px',
@@ -263,7 +280,6 @@ export default function Contact() {
             height: '98px',
             pointerEvents: 'none',
             zIndex: 30,
-            animation: 'walkLeftToRight 15s linear infinite',
             willChange: 'transform',
           }}
         >
