@@ -107,7 +107,6 @@ export default function Skills() {
 
           {/* DYNAMIC SKILLS COUNTER TEXT */}
           <div className="flex items-center gap-2 pb-1">
-            <span className="w-2 h-2 rounded-full bg-[#2E828F] animate-ping" />
             <p className="text-sm sm:text-base font-mono text-[#0C0C0E]/80 font-semibold">
               Skilled in <span className="text-[#2E828F]">{totalSkillsCount} skills</span> in different categories
             </p>

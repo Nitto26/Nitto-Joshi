@@ -290,11 +290,11 @@ export default function Competitions() {
       {/* ── GRADIENT OVERLAYS ──────────────────────────────────── */}
       <div style={{
         position: 'absolute', inset: 0, zIndex: 2, pointerEvents: 'none',
-        background: 'linear-gradient(to right, rgba(10,10,11,0.93) 0%, rgba(10,10,11,0.55) 48%, rgba(10,10,11,0.08) 100%)',
+        background: 'linear-gradient(to right, rgba(10,10,11,0.97) 0%, rgba(10,10,11,0.88) 45%, rgba(10,10,11,0.40) 72%, rgba(10,10,11,0.10) 100%)',
       }} />
       <div style={{
         position: 'absolute', inset: 0, zIndex: 2, pointerEvents: 'none',
-        background: 'linear-gradient(to top, rgba(10,10,11,0.97) 0%, rgba(10,10,11,0.35) 42%, transparent 100%)',
+        background: 'linear-gradient(to top, rgba(10,10,11,0.98) 0%, rgba(10,10,11,0.70) 50%, rgba(10,10,11,0.15) 100%)',
       }} />
 
       {/* ── EXPANDING CARD OVERLAY ─────────────────────────────── */}
@@ -369,9 +369,10 @@ export default function Competitions() {
               <span style={{ width: '28px', height: '1.5px', background: '#e8c840', flexShrink: 0 }} />
               <span style={{
                 fontFamily: "'Inter', sans-serif",
-                fontSize: '11px', fontWeight: 600,
-                color: 'rgba(255,255,255,0.75)',
+                fontSize: '11px', fontWeight: 700,
+                color: '#ffffff',
                 letterSpacing: '0.12em', textTransform: 'uppercase',
+                textShadow: '0 1px 4px rgba(0,0,0,0.8)',
               }}>
                 {current.subtitle}
               </span>
@@ -384,6 +385,7 @@ export default function Competitions() {
               fontWeight: 700, color: '#ffffff',
               lineHeight: 1.0, textTransform: 'uppercase',
               letterSpacing: '-0.01em', margin: 0, whiteSpace: 'pre-line',
+              textShadow: '0 2px 10px rgba(0,0,0,0.9)',
             }}>
               {current.title}
             </h2>
@@ -391,8 +393,13 @@ export default function Competitions() {
             {/* Description */}
             <p style={{
               fontFamily: "'Inter', sans-serif",
-              fontSize: '12.5px', color: 'rgba(255,255,255,0.70)',
-              lineHeight: 1.65, maxWidth: '380px', margin: 0,
+              fontSize: 'clamp(13px, 1.2vw, 14.5px)',
+              color: '#ffffff',
+              fontWeight: 500,
+              lineHeight: 1.6,
+              maxWidth: '380px',
+              margin: 0,
+              textShadow: '0 2px 8px rgba(0,0,0,0.95), 0 1px 3px rgba(0,0,0,0.9)',
             }}>
               {current.desc}
             </p>

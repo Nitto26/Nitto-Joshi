@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowUpRight, Check, Copy, Mail, MapPin, Phone, Sparkles } from 'lucide-react';
+import { ArrowUpRight, Check, Mail, MapPin, Phone, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import lottie from 'lottie-web';
 import { PERSONAL_INFO } from '../../data/portfolioData';
@@ -84,20 +84,20 @@ export default function Contact() {
 
       <section
         id="contact"
-        className="relative w-full h-screen min-h-[620px] max-h-[960px] bg-[#0A0A0C] text-white flex flex-col justify-between overflow-hidden select-none px-6 sm:px-12 lg:px-16 py-8 sm:py-10"
+        className="relative w-full min-h-screen lg:h-screen bg-[#0A0A0C] text-white flex flex-col justify-between overflow-x-hidden select-none px-4 sm:px-8 lg:px-16 py-10 pb-28 lg:py-8 lg:pb-10"
       >
         {/* Top Center Radial Glow Aura */}
         <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-[550px] h-[300px] pointer-events-none opacity-35 blur-[90px]"
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-[320px] sm:w-[550px] h-[200px] sm:h-[300px] pointer-events-none opacity-35 blur-[70px] sm:blur-[90px]"
           style={{
             background: 'radial-gradient(circle, rgba(46, 130, 143, 0.45) 0%, rgba(10, 10, 12, 0) 70%)',
           }}
         />
 
-        {/* Background Watermark Text "CONTACT" */}
-        <div className="absolute top-6 left-0 right-0 text-center pointer-events-none z-0">
+        {/* Background Watermark Text "CONTACT" - Cleanly placed behind content */}
+        <div className="absolute top-12 lg:top-6 left-0 right-0 text-center pointer-events-none z-0">
           <span
-            className="text-[11vw] sm:text-[13vw] font-black uppercase text-white/[0.03] tracking-widest leading-none block select-none"
+            className="text-[14vw] lg:text-[13vw] font-black uppercase text-white/[0.025] tracking-widest leading-none block select-none"
             style={{ fontFamily: "'Oswald', 'Syne', sans-serif" }}
           >
             CONTACT
@@ -105,14 +105,14 @@ export default function Contact() {
         </div>
 
         {/* Decorative Corner Lines */}
-        <div className="absolute top-8 left-8 w-20 h-20 border-t border-l border-white/10 pointer-events-none" />
-        <div className="absolute top-8 right-8 w-20 h-20 border-t border-r border-white/10 pointer-events-none" />
+        <div className="absolute top-6 left-6 sm:top-8 sm:left-8 w-12 sm:w-20 h-12 sm:h-20 border-t border-l border-white/10 pointer-events-none" />
+        <div className="absolute top-6 right-6 sm:top-8 sm:right-8 w-12 sm:w-20 h-12 sm:h-20 border-t border-r border-white/10 pointer-events-none" />
 
-        {/* Main 16:9 Section Content (Centered in Viewport) */}
-        <div className="max-w-6xl mx-auto w-full relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center my-auto">
+        {/* Main Section Content (Fully responsive on mobile, centered 16:9 on desktop) */}
+        <div className="max-w-6xl mx-auto w-full relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-center my-auto pt-2 lg:pt-0">
           
           {/* Left Column: Headline & Direct Contact Cards */}
-          <div className="lg:col-span-5 space-y-6">
+          <div className="lg:col-span-5 space-y-4 sm:space-y-6">
             
             {/* Eyebrow Pill Badge */}
             <div>
@@ -123,7 +123,7 @@ export default function Contact() {
             </div>
 
             {/* Heading & Subtitle */}
-            <div className="space-y-2">
+            <div className="space-y-1.5 sm:space-y-2">
               <h2
                 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-white tracking-tight leading-tight"
                 style={{ fontFamily: "'Syne', sans-serif" }}
@@ -136,26 +136,26 @@ export default function Contact() {
             </div>
 
             {/* 3 Info Cards */}
-            <div className="space-y-3 pt-1">
+            <div className="space-y-2.5 sm:space-y-3 pt-1">
               
               {/* Card 1: Email us */}
               <div
                 onClick={copyEmail}
-                className="bg-[#121316]/90 border border-white/10 hover:border-[#2E828F]/60 rounded-xl p-3.5 flex items-center justify-between transition-all duration-300 group cursor-pointer shadow-lg backdrop-blur-xl"
+                className="bg-[#121316]/90 border border-white/10 hover:border-[#2E828F]/60 rounded-xl p-3 sm:p-3.5 flex items-center justify-between transition-all duration-300 group cursor-pointer shadow-lg backdrop-blur-xl"
               >
-                <div className="flex items-center gap-3.5">
-                  <div className="w-9 h-9 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center text-white group-hover:border-[#2E828F] group-hover:text-[#2E828F] transition-all">
-                    <Mail size={16} />
+                <div className="flex items-center gap-3 sm:gap-3.5">
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center text-white group-hover:border-[#2E828F] group-hover:text-[#2E828F] transition-all shrink-0">
+                    <Mail size={15} />
                   </div>
-                  <div>
-                    <h4 className="text-[10px] font-mono text-white/50 uppercase tracking-wider">Email us</h4>
-                    <p className="text-xs font-sans font-medium text-white group-hover:text-[#2E828F] transition-colors">
+                  <div className="min-w-0">
+                    <h4 className="text-[9px] sm:text-[10px] font-mono text-white/50 uppercase tracking-wider">Email us</h4>
+                    <p className="text-xs font-sans font-medium text-white group-hover:text-[#2E828F] transition-colors truncate">
                       nittojoshi@example.com
                     </p>
                   </div>
                 </div>
 
-                <div className="w-8 h-8 rounded-full bg-white/[0.06] flex items-center justify-center text-white/60 group-hover:text-white group-hover:bg-[#2E828F] transition-all">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/[0.06] flex items-center justify-center text-white/60 group-hover:text-white group-hover:bg-[#2E828F] transition-all shrink-0 ml-2">
                   {copied ? <Check size={14} className="text-green-400" /> : <ArrowUpRight size={14} />}
                 </div>
               </div>
@@ -165,41 +165,41 @@ export default function Contact() {
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[#121316]/90 border border-white/10 hover:border-[#2E828F]/60 rounded-xl p-3.5 flex items-center justify-between transition-all duration-300 group cursor-pointer shadow-lg backdrop-blur-xl"
+                className="bg-[#121316]/90 border border-white/10 hover:border-[#2E828F]/60 rounded-xl p-3 sm:p-3.5 flex items-center justify-between transition-all duration-300 group cursor-pointer shadow-lg backdrop-blur-xl"
                 style={{ textDecoration: 'none' }}
               >
-                <div className="flex items-center gap-3.5">
-                  <div className="w-9 h-9 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center text-white group-hover:border-[#2E828F] group-hover:text-[#2E828F] transition-all">
-                    <Phone size={16} />
+                <div className="flex items-center gap-3 sm:gap-3.5">
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center text-white group-hover:border-[#2E828F] group-hover:text-[#2E828F] transition-all shrink-0">
+                    <Phone size={15} />
                   </div>
-                  <div>
-                    <h4 className="text-[10px] font-mono text-white/50 uppercase tracking-wider">Direct channel</h4>
-                    <p className="text-xs font-sans font-medium text-white group-hover:text-[#2E828F] transition-colors">
+                  <div className="min-w-0">
+                    <h4 className="text-[9px] sm:text-[10px] font-mono text-white/50 uppercase tracking-wider">Direct channel</h4>
+                    <p className="text-xs font-sans font-medium text-white group-hover:text-[#2E828F] transition-colors truncate">
                       LinkedIn / GitHub (@nittojoshi)
                     </p>
                   </div>
                 </div>
 
-                <div className="w-8 h-8 rounded-full bg-white/[0.06] flex items-center justify-center text-white/60 group-hover:text-white group-hover:bg-[#2E828F] transition-all">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/[0.06] flex items-center justify-center text-white/60 group-hover:text-white group-hover:bg-[#2E828F] transition-all shrink-0 ml-2">
                   <ArrowUpRight size={14} />
                 </div>
               </a>
 
               {/* Card 3: Our location */}
-              <div className="bg-[#121316]/90 border border-white/10 hover:border-[#2E828F]/60 rounded-xl p-3.5 flex items-center justify-between transition-all duration-300 group shadow-lg backdrop-blur-xl">
-                <div className="flex items-center gap-3.5">
-                  <div className="w-9 h-9 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center text-white group-hover:border-[#2E828F] group-hover:text-[#2E828F] transition-all">
-                    <MapPin size={16} />
+              <div className="bg-[#121316]/90 border border-white/10 hover:border-[#2E828F]/60 rounded-xl p-3 sm:p-3.5 flex items-center justify-between transition-all duration-300 group shadow-lg backdrop-blur-xl">
+                <div className="flex items-center gap-3 sm:gap-3.5">
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center text-white group-hover:border-[#2E828F] group-hover:text-[#2E828F] transition-all shrink-0">
+                    <MapPin size={15} />
                   </div>
-                  <div>
-                    <h4 className="text-[10px] font-mono text-white/50 uppercase tracking-wider">Our location</h4>
-                    <p className="text-xs font-sans font-medium text-white">
+                  <div className="min-w-0">
+                    <h4 className="text-[9px] sm:text-[10px] font-mono text-white/50 uppercase tracking-wider">Our location</h4>
+                    <p className="text-xs font-sans font-medium text-white truncate">
                       {PERSONAL_INFO.location}
                     </p>
                   </div>
                 </div>
 
-                <div className="w-8 h-8 rounded-full bg-white/[0.06] flex items-center justify-center text-white/60 group-hover:text-white group-hover:bg-[#2E828F] transition-all">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/[0.06] flex items-center justify-center text-white/60 group-hover:text-white group-hover:bg-[#2E828F] transition-all shrink-0 ml-2">
                   <ArrowUpRight size={14} />
                 </div>
               </div>
@@ -210,8 +210,8 @@ export default function Contact() {
 
           {/* Right Column: Compact Glassmorphic Interactive Form */}
           <div className="lg:col-span-7">
-            <div className="bg-[#121316]/90 border border-white/10 rounded-[24px] p-5 sm:p-7 md:p-8 shadow-2xl backdrop-blur-xl">
-              <form onSubmit={handleSubmit} className="space-y-3.5">
+            <div className="bg-[#121316]/90 border border-white/10 rounded-[20px] sm:rounded-[24px] p-4 sm:p-7 md:p-8 shadow-2xl backdrop-blur-xl">
+              <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-3.5">
                 
                 {/* Name Input */}
                 <div>
@@ -220,7 +220,7 @@ export default function Contact() {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="Name"
-                    className="w-full px-4 py-3 rounded-lg bg-[#1A1B1F] border border-white/10 text-white placeholder-white/40 text-xs sm:text-sm font-sans focus:outline-none focus:border-[#2E828F] focus:ring-1 focus:ring-[#2E828F] transition-all"
+                    className="w-full px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-lg bg-[#1A1B1F] border border-white/10 text-white placeholder-white/40 text-xs sm:text-sm font-sans focus:outline-none focus:border-[#2E828F] focus:ring-1 focus:ring-[#2E828F] transition-all"
                   />
                 </div>
 
@@ -231,18 +231,18 @@ export default function Contact() {
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     placeholder="Email"
-                    className="w-full px-4 py-3 rounded-lg bg-[#1A1B1F] border border-white/10 text-white placeholder-white/40 text-xs sm:text-sm font-sans focus:outline-none focus:border-[#2E828F] focus:ring-1 focus:ring-[#2E828F] transition-all"
+                    className="w-full px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-lg bg-[#1A1B1F] border border-white/10 text-white placeholder-white/40 text-xs sm:text-sm font-sans focus:outline-none focus:border-[#2E828F] focus:ring-1 focus:ring-[#2E828F] transition-all"
                   />
                 </div>
 
                 {/* Message Textarea */}
                 <div>
                   <textarea
-                    rows={4}
+                    rows={3}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     placeholder="Message"
-                    className="w-full px-4 py-3 rounded-lg bg-[#1A1B1F] border border-white/10 text-white placeholder-white/40 text-xs sm:text-sm font-sans focus:outline-none focus:border-[#2E828F] focus:ring-1 focus:ring-[#2E828F] transition-all resize-none"
+                    className="w-full px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-lg bg-[#1A1B1F] border border-white/10 text-white placeholder-white/40 text-xs sm:text-sm font-sans focus:outline-none focus:border-[#2E828F] focus:ring-1 focus:ring-[#2E828F] transition-all resize-none"
                   />
                 </div>
 
@@ -250,7 +250,7 @@ export default function Contact() {
                 <div className="pt-1">
                   <button
                     type="submit"
-                    className="w-full py-3.5 rounded-xl bg-white text-black font-sans text-xs sm:text-sm font-bold tracking-wide hover:bg-white/90 active:scale-[0.99] transition-all duration-200 shadow-xl cursor-pointer"
+                    className="w-full py-3 sm:py-3.5 rounded-xl bg-white text-black font-sans text-xs sm:text-sm font-bold tracking-wide hover:bg-white/90 active:scale-[0.99] transition-all duration-200 shadow-xl cursor-pointer"
                   >
                     Submit
                   </button>

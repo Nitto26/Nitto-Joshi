@@ -182,24 +182,29 @@ export default function Projects() {
       touchEndY = e.touches[0].clientY;
       currentYRef.current = touchEndY;
       const deltaY = touchEndY - touchStartY;
-
       const current = activeIndexRef.current;
 
-      // If swiping UP and cards remain, lock page scroll
-      if (deltaY < -10 && current < total - 1) {
-        if (e.cancelable) e.preventDefault();
-        setDragY(deltaY);
+      // Swiping UP (moving to next card or page scroll down)
+      if (deltaY < -10) {
+        if (current < total - 1) {
+          if (e.cancelable) e.preventDefault();
+          setDragY(deltaY);
+        } else {
+          setDragY(0);
+        }
       }
-      // If swiping DOWN and previous cards exist, lock page scroll
-      else if (deltaY > 10 && current > 0) {
-        if (e.cancelable) e.preventDefault();
-        setDragY(deltaY);
-      } else {
-        setDragY(deltaY * 0.3);
+      // Swiping DOWN (moving to prev card or page scroll up)
+      else if (deltaY > 10) {
+        if (current > 0) {
+          if (e.cancelable) e.preventDefault();
+          setDragY(deltaY);
+        } else {
+          setDragY(0);
+        }
       }
     };
 
-    const onTouchEnd = (e) => {
+    const onTouchEnd = () => {
       if (!isSwiping) return;
       isSwiping = false;
       setIsDragging(false);
@@ -327,7 +332,7 @@ export default function Projects() {
             }
           }}
           data-cursor="WATCH"
-          style={{ touchAction: 'pan-x' }}
+          style={{ touchAction: 'pan-y' }}
         >
           {PROJECTS.map((project, index) => {
             const isPassed = index < activeIndex;
