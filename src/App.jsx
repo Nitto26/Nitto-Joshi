@@ -12,7 +12,6 @@ import LogicHighlight from './components/sections/LogicHighlight';
 import Projects from './components/sections/Projects';
 import Competitions from './components/sections/Competitions';
 import Skills from './components/sections/Skills';
-import Services from './components/sections/Services';
 import Contact from './components/sections/Contact';
 import Footer from './components/sections/Footer';
 
@@ -37,7 +36,6 @@ export default function App() {
         <Projects />
         <Competitions />
         <Skills />
-        <Services />
         <Contact />
       </main>
 

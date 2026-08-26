@@ -29,22 +29,20 @@ export default function Navbar() {
       }
 
       // Smart Hide on Scroll:
-      // When at top (< 60px), always visible
       if (currentScrollY < 60) {
         setVisible(true);
       } else {
-        // If scrolling down, hide navbar; if scrolling up, show navbar
         if (currentScrollY > lastScrollYRef.current + 8) {
-          setVisible(false); // Hide on scroll down
+          setVisible(false);
         } else if (currentScrollY < lastScrollYRef.current - 8) {
-          setVisible(true); // Re-appear on scroll up
+          setVisible(true);
         }
       }
 
       lastScrollYRef.current = currentScrollY;
 
       // Detect active section
-      const sections = ['hero', 'about', 'projects', 'achievements', 'skills', 'services', 'contact'];
+      const sections = ['hero', 'about', 'projects', 'achievements', 'skills', 'contact'];
       const scrollPos = currentScrollY + 200;
 
       for (const sectionId of sections) {
@@ -186,7 +184,7 @@ export default function Navbar() {
             </span>
             <button
               onClick={() => setMobileMenuOpen(false)}
-              className="w-11 h-11 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-colors"
+              className="w-11 h-11 rounded-full bg-white/10 text-[#ffffff] flex items-center justify-center hover:bg-white/20 transition-colors"
               style={{
                 width: '2.75rem',
                 height: '2.75rem',
