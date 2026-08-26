@@ -83,7 +83,6 @@ export default function Hero({ isDarkMode }) {
     }
   };
 
-  // Determine current image sources based on dark mode & hit state
   const activeHero1 = isDarkMode ? darkHero1Img : hero1Img;
   const activeHero2 = isDarkMode ? darkHero2Img : hero2Img;
 
@@ -91,7 +90,7 @@ export default function Hero({ isDarkMode }) {
     <section
       id="hero"
       ref={containerRef}
-      className={`relative min-h-screen flex flex-col justify-between pt-20 pb-6 sm:pt-24 sm:pb-12 px-6 sm:px-12 lg:px-24 overflow-hidden transition-colors duration-500 ${
+      className={`relative min-h-screen flex flex-col justify-between pt-24 pb-6 sm:pt-28 sm:pb-12 lg:pt-32 px-6 sm:px-12 lg:px-20 xl:px-24 overflow-hidden transition-colors duration-500 ${
         isDarkMode ? 'bg-[#060608] text-white' : 'bg-[#FAF9F6] text-[#0C0C0E]'
       }`}
       style={{
@@ -100,15 +99,15 @@ export default function Hero({ isDarkMode }) {
         position: 'relative'
       }}
     >
-      <div className="max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-4 items-center z-10">
+      <div className="max-w-7xl xl:max-w-8xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 xl:gap-10 items-center z-10 my-auto">
         
         {/* Left Column: Editorial Headline & Identity */}
-        <div className="lg:col-span-6 flex flex-col justify-center lg:pl-12 xl:pl-16 z-20">
+        <div className="lg:col-span-6 flex flex-col justify-center lg:pl-10 xl:pl-16 z-20">
           
           {/* Eyebrow: HELLO, I'M */}
-          <div className="mb-4">
+          <div className="mb-4 lg:mb-5">
             <span
-              className={`text-xs sm:text-sm font-mono tracking-[0.35em] uppercase font-semibold ${
+              className={`text-xs sm:text-sm lg:text-base xl:text-lg font-mono tracking-[0.35em] uppercase font-semibold ${
                 isDarkMode ? 'text-white/80' : 'text-[#0C0C0E]'
               }`}
               style={{ fontFamily: "'Space Grotesk', monospace", letterSpacing: '0.35em' }}
@@ -119,7 +118,7 @@ export default function Hero({ isDarkMode }) {
 
           {/* Main Headline: NITTO JOSHI */}
           <h1
-            className={`text-6xl sm:text-7xl md:text-8xl xl:text-9xl font-black tracking-tight leading-[0.88] mb-6 select-none font-display ${
+            className={`text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10.5rem] 2xl:text-[12rem] font-black tracking-tight leading-[0.88] mb-6 lg:mb-8 select-none font-display ${
               isDarkMode ? 'text-white' : 'text-[#0C0C0E]'
             }`}
             style={{
@@ -137,25 +136,23 @@ export default function Hero({ isDarkMode }) {
           </h1>
 
           {/* Hairline separator with dot terminal */}
-          <div className="flex items-center w-full max-w-md my-4">
+          <div className="flex items-center w-full max-w-md lg:max-w-xl my-4 lg:my-6">
             <div
-              className={`h-[1.5px] flex-grow transition-colors duration-500 ${
+              className={`h-[1.5px] lg:h-[2px] flex-grow transition-colors duration-500 ${
                 isDarkMode ? 'bg-[#E53E3E]' : 'bg-[#0C0C0E]'
               }`}
-              style={{ height: '1.5px' }}
             />
             <div
-              className={`w-2 h-2 rounded-full shrink-0 transition-colors duration-500 ${
-                isDarkMode ? 'bg-[#E53E3E] shadow-[0_0_12px_#E53E3E]' : 'bg-[#0C0C0E]'
+              className={`w-2 h-2 lg:w-2.5 lg:h-2.5 rounded-full shrink-0 transition-colors duration-500 ${
+                isDarkMode ? 'bg-[#E53E3E] shadow-[0_0_14px_#E53E3E]' : 'bg-[#0C0C0E]'
               }`}
-              style={{ width: '7px', height: '7px', borderRadius: '50%' }}
             />
           </div>
 
           {/* Tagline: I BUILD • SOLVE • CREATE */}
-          <div className="my-3">
+          <div className="my-3 lg:my-4">
             <p
-              className={`text-xs sm:text-sm md:text-base font-mono tracking-[0.25em] font-medium uppercase ${
+              className={`text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl font-mono tracking-[0.25em] font-medium uppercase ${
                 isDarkMode ? 'text-white/80' : 'text-[#0C0C0E]'
               }`}
               style={{ fontFamily: "'Space Grotesk', monospace", letterSpacing: '0.25em' }}
@@ -165,11 +162,11 @@ export default function Hero({ isDarkMode }) {
           </div>
 
           {/* CTA: VIEW MY WORK button */}
-          <div className="mt-8">
+          <div className="mt-8 lg:mt-10">
             <button
               onClick={scrollToWork}
               data-cursor="EXPLORE"
-              className={`group inline-flex items-center gap-4 px-8 py-4 text-xs sm:text-sm font-mono tracking-widest font-bold uppercase transition-all duration-300 shadow-md hover:shadow-xl border ${
+              className={`group inline-flex items-center gap-4 lg:gap-5 px-8 py-4 lg:px-10 lg:py-5 text-xs sm:text-sm lg:text-base xl:text-lg font-mono tracking-widest font-bold uppercase transition-all duration-300 shadow-md hover:shadow-xl border ${
                 isDarkMode
                   ? 'bg-black text-white border-[#E53E3E] hover:bg-[#E53E3E] hover:border-[#E53E3E]'
                   : 'bg-[#0C0C0E] text-[#FAF9F6] border-transparent hover:bg-[#2E828F]'
@@ -181,8 +178,8 @@ export default function Hero({ isDarkMode }) {
             >
               <span>VIEW MY WORK</span>
               <ArrowUpRight
-                size={16}
-                className="transform transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+                size={18}
+                className="transform transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 lg:w-5 lg:h-5"
               />
             </button>
           </div>
@@ -190,11 +187,11 @@ export default function Hero({ isDarkMode }) {
         </div>
 
         {/* Right Column: Hero Cutout PNG & Graphic Elements */}
-        <div className="lg:col-span-6 relative flex items-end justify-center min-h-[340px] sm:min-h-[460px] lg:min-h-[640px] mt-4 lg:mt-0 pb-4 sm:pb-0">
+        <div className="lg:col-span-6 relative flex items-end justify-center min-h-[340px] sm:min-h-[460px] lg:min-h-[660px] xl:min-h-[760px] mt-4 lg:mt-0 pb-4 sm:pb-0">
           
           {/* Circular Brush Paint Texture / Glowing Red Aura Behind Nitto */}
           <div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[270px] sm:w-[420px] lg:w-[520px] h-[270px] sm:h-[420px] lg:h-[520px] rounded-full pointer-events-none -z-0 transition-all duration-500"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[270px] sm:w-[420px] lg:w-[560px] xl:w-[680px] h-[270px] sm:h-[420px] lg:h-[560px] xl:h-[680px] rounded-full pointer-events-none -z-0 transition-all duration-500"
             style={{
               background: isDarkMode
                 ? 'radial-gradient(circle at 45% 45%, rgba(229, 62, 62, 0.45) 0%, rgba(180, 20, 20, 0.20) 45%, rgba(6, 6, 8, 0) 72%)'
@@ -208,7 +205,7 @@ export default function Hero({ isDarkMode }) {
 
           {/* Upper Right Code Symbol: </> */}
           <div
-            className={`absolute top-2 right-2 sm:top-6 sm:right-6 z-20 font-mono text-xl sm:text-2xl font-bold tracking-widest select-none ${
+            className={`absolute top-2 right-2 sm:top-6 sm:right-6 lg:top-8 lg:right-10 z-20 font-mono text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold tracking-widest select-none ${
               isDarkMode ? 'text-white' : 'text-[#0C0C0E]'
             }`}
             style={{ fontFamily: "'Space Grotesk', monospace" }}
@@ -217,19 +214,18 @@ export default function Hero({ isDarkMode }) {
           </div>
 
           {/* 3x3 Dot Grid Matrix */}
-          <div className="absolute right-0 sm:right-4 top-1/2 translate-y-4 z-20 grid grid-cols-3 gap-2.5 opacity-80 select-none">
+          <div className="absolute right-0 sm:right-4 lg:right-6 top-1/2 translate-y-4 z-20 grid grid-cols-3 gap-2.5 sm:gap-3 opacity-80 select-none">
             {[...Array(9)].map((_, i) => (
               <div
                 key={i}
-                className={`w-1.5 h-1.5 rounded-full ${isDarkMode ? 'bg-[#E53E3E]' : 'bg-[#0C0C0E]'}`}
-                style={{ width: '5px', height: '5px', borderRadius: '50%' }}
+                className={`w-1.5 h-1.5 lg:w-2 lg:h-2 rounded-full ${isDarkMode ? 'bg-[#E53E3E]' : 'bg-[#0C0C0E]'}`}
               />
             ))}
           </div>
 
           {/* Bottom Left Brush Stroke Scribble */}
           <svg
-            className={`absolute bottom-6 left-2 sm:left-8 w-16 sm:w-28 h-10 sm:h-12 opacity-60 z-20 pointer-events-none ${
+            className={`absolute bottom-6 left-2 sm:left-8 lg:left-12 w-16 sm:w-28 lg:w-36 h-10 sm:h-12 lg:h-16 opacity-60 z-20 pointer-events-none ${
               isDarkMode ? 'text-[#E53E3E]' : 'text-[#9A9690]'
             }`}
             viewBox="0 0 100 40"
@@ -244,7 +240,7 @@ export default function Hero({ isDarkMode }) {
 
           {/* Cutout PNG Container */}
           <div
-            className={`relative w-full max-w-[290px] xs:max-w-[340px] sm:max-w-[460px] lg:max-w-[540px] flex items-end justify-center cursor-pointer select-none transition-transform duration-300 z-10 ${
+            className={`relative w-full max-w-[290px] xs:max-w-[340px] sm:max-w-[460px] lg:max-w-[580px] xl:max-w-[680px] 2xl:max-w-[760px] flex items-end justify-center cursor-pointer select-none transition-transform duration-300 z-10 ${
               isHit ? 'shake-active' : ''
             }`}
             style={{
@@ -255,13 +251,13 @@ export default function Hero({ isDarkMode }) {
             aria-label="Nitto Joshi interactive portrait - Tap head"
           >
             {/* Dual Images Loaded in DOM for 0ms Instant Swap */}
-            <div className="relative w-auto max-h-[350px] xs:max-h-[400px] sm:max-h-[540px] lg:max-h-[640px] flex items-end">
+            <div className="relative w-auto max-h-[350px] xs:max-h-[400px] sm:max-h-[540px] lg:max-h-[680px] xl:max-h-[780px] 2xl:max-h-[860px] flex items-end">
               {/* Default Hero Image */}
               <img
                 key={isDarkMode ? 'dark1' : 'light1'}
                 src={activeHero1}
                 alt="Nitto Joshi"
-                className={`w-auto max-h-[350px] xs:max-h-[400px] sm:max-h-[540px] lg:max-h-[640px] object-contain object-bottom drop-shadow-2xl transition-opacity duration-100 ${
+                className={`w-auto max-h-[350px] xs:max-h-[400px] sm:max-h-[540px] lg:max-h-[680px] xl:max-h-[780px] 2xl:max-h-[860px] object-contain object-bottom drop-shadow-2xl transition-opacity duration-100 ${
                   isHit ? 'opacity-0 absolute inset-0 pointer-events-none' : 'opacity-100 relative'
                 }`}
                 style={{
@@ -276,7 +272,7 @@ export default function Hero({ isDarkMode }) {
                 key={isDarkMode ? 'dark2' : 'light2'}
                 src={activeHero2}
                 alt="Nitto Joshi reacting: OWCH!"
-                className={`w-auto max-h-[350px] xs:max-h-[400px] sm:max-h-[540px] lg:max-h-[640px] object-contain object-bottom drop-shadow-2xl transition-opacity duration-100 ${
+                className={`w-auto max-h-[350px] xs:max-h-[400px] sm:max-h-[540px] lg:max-h-[680px] xl:max-h-[780px] 2xl:max-h-[860px] object-contain object-bottom drop-shadow-2xl transition-opacity duration-100 ${
                   isHit ? 'opacity-100 relative scale-103 brightness-95' : 'opacity-0 absolute inset-0 pointer-events-none'
                 }`}
                 style={{
@@ -290,17 +286,17 @@ export default function Hero({ isDarkMode }) {
             {/* Comic "OWCH!" Pop Bubble on Hit */}
             {isHit && (
               <div
-                className={`comic-pop absolute top-4 right-8 sm:top-6 sm:right-16 z-30 px-5 py-2.5 rounded-xl border-2 shadow-2xl flex items-center gap-2 pointer-events-none ${
+                className={`comic-pop absolute top-4 right-8 sm:top-6 sm:right-16 lg:top-10 lg:right-24 z-30 px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl sm:rounded-2xl border-2 shadow-2xl flex items-center gap-2 pointer-events-none ${
                   isDarkMode
                     ? 'bg-[#E53E3E] text-white border-white'
                     : 'bg-[#0C0C0E] text-white border-white'
                 }`}
                 style={{ fontFamily: "'Oswald', sans-serif" }}
               >
-                <span className="text-2xl sm:text-3xl font-black tracking-wider text-[#FFD166]">
+                <span className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-wider text-[#FFD166]">
                   OWCH!
                 </span>
-                <span className="text-xl dizzy-star">😵</span>
+                <span className="text-xl sm:text-2xl dizzy-star">😵</span>
                 <div
                   className={`absolute -bottom-2 left-6 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] ${
                     isDarkMode ? 'border-t-[#E53E3E]' : 'border-t-[#0C0C0E]'
@@ -326,7 +322,7 @@ export default function Hero({ isDarkMode }) {
       {/* Floating Toast Notification on Easter Egg trigger */}
       {toastMessage && (
         <div
-          className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50 bg-[#0C0C0E]/95 text-white px-6 py-3 rounded-full border border-white/20 shadow-2xl flex items-center gap-3 text-xs sm:text-sm font-mono tracking-wide animate-bounce"
+          className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50 bg-[#0C0C0E]/95 text-white px-6 py-3 rounded-full border border-white/20 shadow-2xl flex items-center gap-3 text-xs sm:text-sm lg:text-base font-mono tracking-wide animate-bounce"
           style={{
             position: 'fixed',
             bottom: '2.5rem',

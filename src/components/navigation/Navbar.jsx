@@ -9,6 +9,7 @@ export default function Navbar({ isDarkMode, onToggleDarkMode }) {
 
   const lastScrollYRef = useRef(0);
   const clickTimerRef = useRef(null);
+  const lastTapTimeRef = useRef(0);
 
   const navLinks = [
     { name: 'ABOUT', href: '#about' },
@@ -69,18 +70,14 @@ export default function Navbar({ isDarkMode, onToggleDarkMode }) {
     }
   };
 
-  const lastTapTimeRef = useRef(0);
-
   // Instant Pointer/Touch Down handler for maximum sensitivity & zero touch delay
   const handleLogoPointerDown = (e) => {
-    // Only handle primary touch / left mouse click
     if (e.button && e.button !== 0) return;
 
     const now = Date.now();
     const timeDelta = now - lastTapTimeRef.current;
 
     if (timeDelta > 0 && timeDelta < 450) {
-      // INSTANT DOUBLE TAP DETECTED!
       e.preventDefault();
       lastTapTimeRef.current = 0;
 
@@ -93,7 +90,6 @@ export default function Navbar({ isDarkMode, onToggleDarkMode }) {
         onToggleDarkMode();
       }
     } else {
-      // FIRST TAP -> start 220ms window for single-tap scroll
       lastTapTimeRef.current = now;
       if (clickTimerRef.current) clearTimeout(clickTimerRef.current);
 
@@ -117,9 +113,9 @@ export default function Navbar({ isDarkMode, onToggleDarkMode }) {
         } ${
           scrolled
             ? isDarkMode
-              ? 'bg-[#060608]/90 backdrop-blur-md py-4 border-b border-white/10 shadow-lg'
-              : 'bg-[#FAF9F6]/90 backdrop-blur-md py-4 border-b border-black/[0.08] shadow-sm'
-            : 'bg-transparent py-7 border-b border-transparent'
+              ? 'bg-[#060608]/90 backdrop-blur-md py-4 lg:py-5 border-b border-white/10 shadow-lg'
+              : 'bg-[#FAF9F6]/90 backdrop-blur-md py-4 lg:py-5 border-b border-black/[0.08] shadow-sm'
+            : 'bg-transparent py-7 lg:py-8 border-b border-transparent'
         }`}
         style={{
           position: 'fixed',
@@ -130,7 +126,7 @@ export default function Navbar({ isDarkMode, onToggleDarkMode }) {
           transition: 'transform 0.35s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.25s ease, background-color 0.3s ease'
         }}
       >
-        <div className="max-w-7xl mx-auto px-6 sm:px-12 flex items-center justify-between">
+        <div className="max-w-7xl xl:max-w-8xl mx-auto px-6 sm:px-12 lg:px-16 flex items-center justify-between">
           {/* Logo with Single Tap (Hero) / Double Tap (Dark Theme Toggle) */}
           <a
             href="#hero"
@@ -147,7 +143,7 @@ export default function Navbar({ isDarkMode, onToggleDarkMode }) {
             title="Single tap: Go to Home | Double tap: Toggle Dark Theme"
           >
             <span
-              className={`text-3xl sm:text-4xl font-black font-display tracking-tighter transition-transform duration-300 group-hover:scale-105 ${
+              className={`text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black font-display tracking-tighter transition-transform duration-300 group-hover:scale-105 ${
                 isDarkMode ? 'text-[#E53E3E]' : 'text-[#0C0C0E]'
               }`}
               style={{ fontFamily: "'Syne', sans-serif", fontWeight: 900 }}
@@ -157,7 +153,7 @@ export default function Navbar({ isDarkMode, onToggleDarkMode }) {
           </a>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-7 lg:gap-10">
+          <nav className="hidden md:flex items-center gap-8 lg:gap-12 xl:gap-16">
             {navLinks.map((link) => {
               const isActive = activeSection === link.href.replace('#', '');
               return (
@@ -166,7 +162,7 @@ export default function Navbar({ isDarkMode, onToggleDarkMode }) {
                   href={link.href}
                   onClick={(e) => handleLinkClick(e, link.href)}
                   data-cursor="GOTO"
-                  className={`text-xs font-mono font-bold tracking-[0.15em] transition-all duration-200 relative py-1 ${
+                  className={`text-xs lg:text-sm xl:text-base font-mono font-bold tracking-[0.18em] transition-all duration-200 relative py-1 ${
                     isDarkMode
                       ? isActive
                         ? 'text-[#E53E3E]'
@@ -177,14 +173,14 @@ export default function Navbar({ isDarkMode, onToggleDarkMode }) {
                   }`}
                   style={{
                     fontFamily: "'Space Grotesk', monospace",
-                    letterSpacing: '0.15em',
+                    letterSpacing: '0.18em',
                     textDecoration: 'none'
                   }}
                 >
                   {link.name}
                   {isActive && (
                     <span
-                      className={`absolute bottom-0 left-0 w-full h-[2px] ${
+                      className={`absolute bottom-0 left-0 w-full h-[2.5px] ${
                         isDarkMode ? 'bg-[#E53E3E]' : 'bg-[#0C0C0E]'
                       }`}
                     />
