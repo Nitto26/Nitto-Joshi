@@ -144,7 +144,7 @@ export default function About({ isDarkMode }) {
               WebkitTextFillColor: 'transparent',
               color: 'transparent',
               filter: isDarkMode ? 'contrast(135%) brightness(120%)' : 'contrast(125%) brightness(95%)',
-              WebkitTextStroke: isDarkMode ? '1.5px rgba(255, 255, 255, 0.85)' : 'none'
+              ...(isDarkMode ? { WebkitTextStroke: '1.5px rgba(255, 255, 255, 0.85)' } : {})
             }}
           >
             <span className="block">NITTO</span>

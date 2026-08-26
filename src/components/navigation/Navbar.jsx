@@ -71,24 +71,29 @@ export default function Navbar({ isDarkMode, onToggleDarkMode }) {
 
   const lastTapTimeRef = useRef(0);
 
-  // Logo Interaction: Single tap = Scroll to #hero | Double tap/click = Toggle Dark Theme
-  const handleLogoTap = (e) => {
-    e.preventDefault();
+  // Instant Pointer/Touch Down handler for maximum sensitivity & zero touch delay
+  const handleLogoPointerDown = (e) => {
+    // Only handle primary touch / left mouse click
+    if (e.button && e.button !== 0) return;
+
     const now = Date.now();
     const timeDelta = now - lastTapTimeRef.current;
 
-    if (timeDelta > 0 && timeDelta < 420) {
-      // DOUBLE TAP / DOUBLE CLICK DETECTED!
+    if (timeDelta > 0 && timeDelta < 450) {
+      // INSTANT DOUBLE TAP DETECTED!
+      e.preventDefault();
       lastTapTimeRef.current = 0;
+
       if (clickTimerRef.current) {
         clearTimeout(clickTimerRef.current);
         clickTimerRef.current = null;
       }
+
       if (onToggleDarkMode) {
         onToggleDarkMode();
       }
     } else {
-      // FIRST TAP -> start window
+      // FIRST TAP -> start 220ms window for single-tap scroll
       lastTapTimeRef.current = now;
       if (clickTimerRef.current) clearTimeout(clickTimerRef.current);
 
@@ -100,7 +105,7 @@ export default function Navbar({ isDarkMode, onToggleDarkMode }) {
         if (target) {
           target.scrollIntoView({ behavior: 'smooth' });
         }
-      }, 300);
+      }, 220);
     }
   };
 
@@ -129,14 +134,16 @@ export default function Navbar({ isDarkMode, onToggleDarkMode }) {
           {/* Logo with Single Tap (Hero) / Double Tap (Dark Theme Toggle) */}
           <a
             href="#hero"
-            onClick={handleLogoTap}
+            onPointerDown={handleLogoPointerDown}
+            onClick={(e) => e.preventDefault()}
             onDoubleClick={(e) => {
               e.preventDefault();
               if (clickTimerRef.current) clearTimeout(clickTimerRef.current);
               if (onToggleDarkMode) onToggleDarkMode();
             }}
             data-cursor={isDarkMode ? "DARK THEME" : "HOME"}
-            className="flex items-center gap-1 group no-underline select-none cursor-pointer p-2 -m-2"
+            className="flex items-center gap-1 group no-underline select-none cursor-pointer p-3 -m-3"
+            style={{ touchAction: 'manipulation' }}
             title="Single tap: Go to Home | Double tap: Toggle Dark Theme"
           >
             <span
