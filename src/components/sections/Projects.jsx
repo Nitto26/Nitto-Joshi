@@ -10,7 +10,7 @@ export const PROJECTS = [
     description: 'Geo-fence attendance app that automatically marks attendance using location-based logic.',
     role: 'App Developer & Logic Builder',
     technologies: ['KOTLIN', 'FASTAPI', 'GEOFENCING', 'API'],
-    videoUrl: 'https://youtube.com', // Video Link Variable: Replace with your project video URL
+    videoUrl: 'https://youtube.com',
     cardBg: '#DCE7E7',
     textColor: '#0C0C0E'
   },
@@ -22,7 +22,7 @@ export const PROJECTS = [
     description: 'Laboratory management system designed to organize laboratory resources and simplify chemical inventory operations.',
     role: 'Lead Developer',
     technologies: ['WEB DEV', 'DATABASE', 'SYSTEM DESIGN'],
-    videoUrl: 'https://youtube.com', // Video Link Variable: Replace with your project video URL
+    videoUrl: 'https://youtube.com',
     cardBg: '#F3ECE2',
     textColor: '#0C0C0E'
   },
@@ -34,7 +34,7 @@ export const PROJECTS = [
     description: 'An automated timetable creation system focused on constraint satisfaction logic and reducing academic conflicts.',
     role: 'Developer & Logic Builder',
     technologies: ['AUTOMATION', 'SCHEDULING', 'LOGIC'],
-    videoUrl: 'https://youtube.com', // Video Link Variable: Replace with your project video URL
+    videoUrl: 'https://youtube.com',
     cardBg: '#E2ECF0',
     textColor: '#0C0C0E'
   },
@@ -46,7 +46,7 @@ export const PROJECTS = [
     description: 'An interactive web project based around cryptic puzzles, clues, exploration and game-like interactions.',
     role: 'Developer & Game Architect',
     technologies: ['WEB', 'GAME LOGIC', 'INTERACTIVE UI'],
-    videoUrl: 'https://youtube.com', // Video Link Variable: Replace with your project video URL
+    videoUrl: 'https://youtube.com',
     cardBg: '#E9E4DC',
     textColor: '#0C0C0E'
   },
@@ -58,7 +58,7 @@ export const PROJECTS = [
     description: 'A scheduling and booking website designed around a simple, clean, and frictionless user experience.',
     role: 'Developer & UI Designer',
     technologies: ['WEB', 'UI/UX', 'SCHEDULING'],
-    videoUrl: 'https://youtube.com', // Video Link Variable: Replace with your project video URL
+    videoUrl: 'https://youtube.com',
     cardBg: '#D8E4E8',
     textColor: '#0C0C0E'
   },
@@ -70,13 +70,13 @@ export const PROJECTS = [
     description: 'A responsive departmental web portal developed for an institutional showcase with a clean interface.',
     role: 'Web Developer',
     technologies: ['HTML', 'CSS', 'JAVASCRIPT', 'UI/UX'],
-    videoUrl: 'https://youtube.com', // Video Link Variable: Replace with your project video URL
+    videoUrl: 'https://youtube.com',
     cardBg: '#EDE7DE',
     textColor: '#0C0C0E'
   }
 ];
 
-export default function Projects() {
+export default function Projects({ isDarkMode }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [dragY, setDragY] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -116,7 +116,7 @@ export default function Projects() {
     }
   };
 
-  // Immediate Wheel Event Listener (Works instantly on hover without clicking first)
+  // Immediate Wheel Event Listener
   useEffect(() => {
     const el = stackRef.current;
     if (!el) return;
@@ -127,7 +127,6 @@ export default function Projects() {
       const current = activeIndexRef.current;
 
       if (e.deltaY > 0) {
-        // Scroll DOWN: flip to next card if not at end
         if (current < total - 1) {
           e.preventDefault();
           if (!isTransitioningRef.current) {
@@ -139,7 +138,6 @@ export default function Projects() {
           }
         }
       } else if (e.deltaY < 0) {
-        // Scroll UP: flip to previous card if not at start
         if (current > 0) {
           e.preventDefault();
           if (!isTransitioningRef.current) {
@@ -157,7 +155,7 @@ export default function Projects() {
     return () => el.removeEventListener('wheel', handleWheel);
   }, [total, nextCard, prevCard]);
 
-  // Mobile Touch Event Handling (Prevents main page scroll while flipping cards)
+  // Mobile Touch Event Handling
   useEffect(() => {
     const el = stackRef.current;
     if (!el) return;
@@ -184,7 +182,6 @@ export default function Projects() {
       const deltaY = touchEndY - touchStartY;
       const current = activeIndexRef.current;
 
-      // Swiping UP (moving to next card or page scroll down)
       if (deltaY < -10) {
         if (current < total - 1) {
           if (e.cancelable) e.preventDefault();
@@ -192,9 +189,7 @@ export default function Projects() {
         } else {
           setDragY(0);
         }
-      }
-      // Swiping DOWN (moving to prev card or page scroll up)
-      else if (deltaY > 10) {
+      } else if (deltaY > 10) {
         if (current > 0) {
           if (e.cancelable) e.preventDefault();
           setDragY(deltaY);
@@ -212,7 +207,6 @@ export default function Projects() {
       const deltaY = touchEndY - touchStartY;
       const current = activeIndexRef.current;
 
-      // Small movement (< 8px) is a Tap -> Open Video
       if (Math.abs(deltaY) < 8) {
         handleCardClick(PROJECTS[current]);
       } else if (deltaY < -40 && current < total - 1) {
@@ -281,23 +275,33 @@ export default function Projects() {
   return (
     <section
       id="projects"
-      className="relative w-full py-16 sm:py-20 lg:py-24 px-4 sm:px-8 lg:px-12 bg-[#FAF9F6] text-[#0C0C0E] border-b border-black/[0.08] select-none"
-      style={{ backgroundColor: '#FAF9F6' }}
+      className={`relative w-full py-16 sm:py-20 lg:py-24 px-4 sm:px-8 lg:px-12 transition-colors duration-500 select-none ${
+        isDarkMode
+          ? 'bg-[#08090C] text-white border-b border-white/10'
+          : 'bg-[#FAF9F6] text-[#0C0C0E] border-b border-black/[0.08]'
+      }`}
+      style={{ backgroundColor: isDarkMode ? '#08090C' : '#FAF9F6' }}
     >
       <div className="max-w-[1240px] mx-auto flex flex-col justify-between">
         
         {/* Section Header */}
-        <div className="w-full flex flex-col sm:flex-row sm:items-end justify-between gap-3 pb-6 mb-8 sm:mb-10 border-b border-black/[0.12]">
+        <div className={`w-full flex flex-col sm:flex-row sm:items-end justify-between gap-3 pb-6 mb-8 sm:mb-10 border-b ${
+          isDarkMode ? 'border-white/15' : 'border-black/[0.12]'
+        }`}>
           <div>
             <span
-              className="text-xs sm:text-sm font-mono font-bold tracking-[0.3em] text-[#0C0C0E] uppercase block mb-1"
+              className={`text-xs sm:text-sm font-mono font-bold tracking-[0.3em] uppercase block mb-1 ${
+                isDarkMode ? 'text-[#3A8B9F]' : 'text-[#0C0C0E]'
+              }`}
               style={{ fontFamily: "'Space Grotesk', monospace" }}
             >
               02 / PROJECTS
             </span>
             
             <h2
-              className="text-4xl sm:text-5xl md:text-6xl font-black font-display tracking-tight text-[#0C0C0E] leading-[0.9] flex items-baseline gap-1"
+              className={`text-4xl sm:text-5xl md:text-6xl font-black font-display tracking-tight leading-[0.9] flex items-baseline gap-1 ${
+                isDarkMode ? 'text-white' : 'text-[#0C0C0E]'
+              }`}
               style={{ fontFamily: "'Oswald', 'Syne', sans-serif" }}
             >
               <span>THINGS</span>
@@ -308,11 +312,15 @@ export default function Projects() {
           </div>
 
           <div className="flex items-center gap-6 sm:pb-1">
-            <p className="text-xs sm:text-sm font-sans text-[#0C0C0E]/80 max-w-xs sm:text-right">
+            <p className={`text-xs sm:text-sm font-sans max-w-xs sm:text-right ${
+              isDarkMode ? 'text-white/70' : 'text-[#0C0C0E]/80'
+            }`}>
               Scroll on the cards to cycle. Click card to watch project video.
             </p>
             
-            <div className="hidden lg:flex w-20 h-10 rounded-full border border-black/25 items-center justify-center text-[#0C0C0E]">
+            <div className={`hidden lg:flex w-20 h-10 rounded-full border items-center justify-center ${
+              isDarkMode ? 'border-white/20 text-white' : 'border-black/25 text-[#0C0C0E]'
+            }`}>
               <ArrowUpRight size={14} />
             </div>
           </div>
@@ -371,15 +379,17 @@ export default function Projects() {
                   isFront ? 'cursor-pointer hover:shadow-3xl' : 'pointer-events-none'
                 }`}
                 style={{
-                  backgroundColor: project.cardBg,
-                  color: project.textColor,
-                  border: '1.5px solid rgba(12, 12, 14, 0.12)',
+                  backgroundColor: isDarkMode ? '#0D0F14' : project.cardBg,
+                  color: isDarkMode ? '#FFFFFF' : project.textColor,
+                  border: isDarkMode ? '1.5px solid rgba(58, 139, 159, 0.35)' : '1.5px solid rgba(12, 12, 14, 0.12)',
                   transform: `translate3d(0, ${translateY}px, 0) scale(${scale}) rotate(${rotate}deg)`,
                   zIndex,
                   opacity,
                   transformOrigin: 'top center',
                   boxShadow: isFront
-                    ? '0 25px 50px -12px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0,0,0,0.04)'
+                    ? isDarkMode
+                      ? '0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 25px rgba(58, 139, 159, 0.15)'
+                      : '0 25px 50px -12px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0,0,0,0.04)'
                     : '0 8px 20px -4px rgba(0, 0, 0, 0.08)'
                 }}
                 role="button"
@@ -389,13 +399,19 @@ export default function Projects() {
                 {/* Top Category Header & Watch Video Pill */}
                 <div className="flex items-center justify-between pb-2">
                   <span
-                    className="text-xs sm:text-sm font-mono font-bold tracking-[0.25em] opacity-80 uppercase"
+                    className={`text-xs sm:text-sm font-mono font-bold tracking-[0.25em] uppercase ${
+                      isDarkMode ? 'text-[#3A8B9F]' : 'opacity-80'
+                    }`}
                     style={{ fontFamily: "'Space Grotesk', monospace" }}
                   >
                     {project.number} / {project.category}
                   </span>
 
-                  <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-black/20 bg-white/50 text-xs font-mono font-bold tracking-wider group-hover:bg-[#0C0C0E] group-hover:text-white transition-colors">
+                  <div className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-mono font-bold tracking-wider transition-colors ${
+                    isDarkMode
+                      ? 'border-white/20 bg-white/10 text-white hover:bg-[#3A8B9F]'
+                      : 'border-black/20 bg-white/50 text-black hover:bg-[#0C0C0E] hover:text-white'
+                  }`}>
                     <Play size={12} className="fill-current" />
                     <span>WATCH VIDEO ↗</span>
                   </div>
@@ -407,13 +423,17 @@ export default function Projects() {
                   {/* Left Details */}
                   <div className="lg:col-span-7 z-10">
                     <h3
-                      className="text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-bold font-sans tracking-tight mb-3 text-[#0C0C0E]"
+                      className={`text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-bold font-sans tracking-tight mb-3 ${
+                        isDarkMode ? 'text-white' : 'text-[#0C0C0E]'
+                      }`}
                       style={{ letterSpacing: '-0.03em' }}
                     >
                       {project.name}
                     </h3>
 
-                    <p className="text-xs sm:text-sm md:text-base font-sans leading-relaxed text-[#0C0C0E]/80 max-w-lg">
+                    <p className={`text-xs sm:text-sm md:text-base font-sans leading-relaxed max-w-lg ${
+                      isDarkMode ? 'text-white/75' : 'text-[#0C0C0E]/80'
+                    }`}>
                       {project.description}
                     </p>
                   </div>
@@ -422,21 +442,29 @@ export default function Projects() {
                   <div className="lg:col-span-5 relative hidden lg:flex items-center justify-end h-full min-h-[200px] pointer-events-none">
                     
                     {/* Concentric Circle Arc */}
-                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-52 h-52 rounded-full border-[1.5px] border-black/15" />
+                    <div className={`absolute right-0 top-1/2 -translate-y-1/2 w-52 h-52 rounded-full border-[1.5px] ${
+                      isDarkMode ? 'border-[#3A8B9F]/30' : 'border-black/15'
+                    }`} />
                     
                     {/* Matrix Grid Lines */}
                     <div
                       className="absolute right-6 top-1/2 -translate-y-1/2 w-40 h-40 opacity-15"
                       style={{
-                        backgroundImage: 'linear-gradient(to right, #000 1px, transparent 1px), linear-gradient(to bottom, #000 1px, transparent 1px)',
+                        backgroundImage: isDarkMode
+                          ? 'linear-gradient(to right, #3A8B9F 1px, transparent 1px), linear-gradient(to bottom, #3A8B9F 1px, transparent 1px)'
+                          : 'linear-gradient(to right, #000 1px, transparent 1px), linear-gradient(to bottom, #000 1px, transparent 1px)',
                         backgroundSize: '20px 20px'
                       }}
                     />
 
                     {/* Smartphone / System Wireframe */}
-                    <div className="relative w-20 h-36 rounded-2xl border-2 border-black/80 bg-white/70 shadow-lg flex items-center justify-center mr-8 rotate-[8deg]">
-                      <div className="w-2.5 h-2.5 rounded-full border border-[#2E828F] flex items-center justify-center">
-                        <div className="w-1 h-1 rounded-full bg-[#2E828F]" />
+                    <div className={`relative w-20 h-36 rounded-2xl border-2 shadow-lg flex items-center justify-center mr-8 rotate-[8deg] ${
+                      isDarkMode
+                        ? 'border-[#3A8B9F] bg-[#0A0C10]/90 shadow-[0_0_20px_rgba(58,139,159,0.3)]'
+                        : 'border-black/80 bg-white/70 shadow-lg'
+                    }`}>
+                      <div className="w-2.5 h-2.5 rounded-full border border-[#3A8B9F] flex items-center justify-center">
+                        <div className="w-1 h-1 rounded-full bg-[#3A8B9F]" />
                       </div>
                     </div>
 
@@ -449,7 +477,11 @@ export default function Projects() {
                   {project.technologies.map((tech) => (
                     <span
                       key={tech}
-                      className="px-3.5 py-1 rounded-full text-[11px] font-mono font-bold tracking-wider bg-transparent border border-black/25 text-[#0C0C0E]"
+                      className={`px-3.5 py-1 rounded-full text-[11px] font-mono font-bold tracking-wider border ${
+                        isDarkMode
+                          ? 'border-[#3A8B9F]/60 text-[#3A8B9F] bg-[#3A8B9F]/10'
+                          : 'border-black/25 text-[#0C0C0E] bg-transparent'
+                      }`}
                       style={{ fontFamily: "'Space Grotesk', monospace" }}
                     >
                       {tech}
@@ -463,15 +495,23 @@ export default function Projects() {
         </div>
 
         {/* Bottom Navigation & Indicator Bar */}
-        <div className="w-full flex items-center justify-between pt-6 text-xs font-mono text-[#0C0C0E]/75">
+        <div className={`w-full flex items-center justify-between pt-6 text-xs font-mono ${
+          isDarkMode ? 'text-white/75' : 'text-[#0C0C0E]/75'
+        }`}>
           
           <div className="flex items-center gap-2">
             <button
               onClick={prevCard}
               disabled={activeIndex === 0}
               aria-label="Previous project"
-              className={`w-7 h-7 rounded-full border border-black/20 flex items-center justify-center transition-colors ${
-                activeIndex === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-[#0C0C0E] hover:text-white'
+              className={`w-7 h-7 rounded-full border flex items-center justify-center transition-colors ${
+                isDarkMode
+                  ? activeIndex === 0
+                    ? 'border-white/10 opacity-30 cursor-not-allowed'
+                    : 'border-white/20 hover:bg-white hover:text-black'
+                  : activeIndex === 0
+                  ? 'border-black/20 opacity-30 cursor-not-allowed'
+                  : 'border-black/20 hover:bg-[#0C0C0E] hover:text-white'
               }`}
             >
               <ChevronUp size={14} />
@@ -480,8 +520,14 @@ export default function Projects() {
               onClick={nextCard}
               disabled={activeIndex === total - 1}
               aria-label="Next project"
-              className={`w-7 h-7 rounded-full border border-black/20 flex items-center justify-center transition-colors ${
-                activeIndex === total - 1 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-[#0C0C0E] hover:text-white'
+              className={`w-7 h-7 rounded-full border flex items-center justify-center transition-colors ${
+                isDarkMode
+                  ? activeIndex === total - 1
+                    ? 'border-white/10 opacity-30 cursor-not-allowed'
+                    : 'border-white/20 hover:bg-white hover:text-black'
+                  : activeIndex === total - 1
+                  ? 'border-black/20 opacity-30 cursor-not-allowed'
+                  : 'border-black/20 hover:bg-[#0C0C0E] hover:text-white'
               }`}
             >
               <ChevronDown size={14} />
@@ -489,12 +535,12 @@ export default function Projects() {
           </div>
 
           <div className="font-bold tracking-widest text-xs">
-            <span className="text-[#2E828F]">0{activeIndex + 1}</span>
-            <span className="opacity-40 mx-1">/</span>
+            <span className="text-[#3A8B9F]">0{activeIndex + 1}</span>
+            <span className={isDarkMode ? 'text-white/40 mx-1' : 'opacity-40 mx-1'}>/</span>
             <span>0{total}</span>
           </div>
 
-          <div className="opacity-70 text-[11px]">
+          <div className={isDarkMode ? 'text-white/60 text-[11px]' : 'opacity-70 text-[11px]'}>
             <span>SWIPE ON CARDS OR USE ARROWS</span>
           </div>
 

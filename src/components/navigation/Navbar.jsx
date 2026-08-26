@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X } from 'lucide-react';
 
-export default function Navbar() {
+export default function Navbar({ isDarkMode, onToggleDarkMode }) {
   const [scrolled, setScrolled] = useState(false);
   const [visible, setVisible] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
 
   const lastScrollYRef = useRef(0);
+  const clickTimerRef = useRef(null);
 
   const navLinks = [
     { name: 'ABOUT', href: '#about' },
@@ -21,14 +22,12 @@ export default function Navbar() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // Scrolled style threshold
       if (currentScrollY > 40) {
         setScrolled(true);
       } else {
         setScrolled(false);
       }
 
-      // Smart Hide on Scroll:
       if (currentScrollY < 60) {
         setVisible(true);
       } else {
@@ -41,7 +40,6 @@ export default function Navbar() {
 
       lastScrollYRef.current = currentScrollY;
 
-      // Detect active section
       const sections = ['hero', 'about', 'projects', 'achievements', 'skills', 'contact'];
       const scrollPos = currentScrollY + 200;
 
@@ -71,6 +69,41 @@ export default function Navbar() {
     }
   };
 
+  const lastTapTimeRef = useRef(0);
+
+  // Logo Interaction: Single tap = Scroll to #hero | Double tap/click = Toggle Dark Theme
+  const handleLogoTap = (e) => {
+    e.preventDefault();
+    const now = Date.now();
+    const timeDelta = now - lastTapTimeRef.current;
+
+    if (timeDelta > 0 && timeDelta < 420) {
+      // DOUBLE TAP / DOUBLE CLICK DETECTED!
+      lastTapTimeRef.current = 0;
+      if (clickTimerRef.current) {
+        clearTimeout(clickTimerRef.current);
+        clickTimerRef.current = null;
+      }
+      if (onToggleDarkMode) {
+        onToggleDarkMode();
+      }
+    } else {
+      // FIRST TAP -> start window
+      lastTapTimeRef.current = now;
+      if (clickTimerRef.current) clearTimeout(clickTimerRef.current);
+
+      clickTimerRef.current = setTimeout(() => {
+        clickTimerRef.current = null;
+        lastTapTimeRef.current = 0;
+        setMobileMenuOpen(false);
+        const target = document.querySelector('#hero');
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 300);
+    }
+  };
+
   return (
     <>
       <header
@@ -78,7 +111,9 @@ export default function Navbar() {
           visible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'
         } ${
           scrolled
-            ? 'bg-[#FAF9F6]/90 backdrop-blur-md py-4 border-b border-black/[0.08] shadow-sm'
+            ? isDarkMode
+              ? 'bg-[#060608]/90 backdrop-blur-md py-4 border-b border-white/10 shadow-lg'
+              : 'bg-[#FAF9F6]/90 backdrop-blur-md py-4 border-b border-black/[0.08] shadow-sm'
             : 'bg-transparent py-7 border-b border-transparent'
         }`}
         style={{
@@ -91,22 +126,30 @@ export default function Navbar() {
         }}
       >
         <div className="max-w-7xl mx-auto px-6 sm:px-12 flex items-center justify-between">
-          {/* Logo */}
+          {/* Logo with Single Tap (Hero) / Double Tap (Dark Theme Toggle) */}
           <a
             href="#hero"
-            onClick={(e) => handleLinkClick(e, '#hero')}
-            data-cursor="HOME"
-            className="flex items-center gap-1 group no-underline"
+            onClick={handleLogoTap}
+            onDoubleClick={(e) => {
+              e.preventDefault();
+              if (clickTimerRef.current) clearTimeout(clickTimerRef.current);
+              if (onToggleDarkMode) onToggleDarkMode();
+            }}
+            data-cursor={isDarkMode ? "DARK THEME" : "HOME"}
+            className="flex items-center gap-1 group no-underline select-none cursor-pointer p-2 -m-2"
+            title="Single tap: Go to Home | Double tap: Toggle Dark Theme"
           >
             <span
-              className="text-3xl sm:text-4xl font-black font-display tracking-tighter text-[#0C0C0E] transition-transform duration-300 group-hover:scale-105"
+              className={`text-3xl sm:text-4xl font-black font-display tracking-tighter transition-transform duration-300 group-hover:scale-105 ${
+                isDarkMode ? 'text-[#E53E3E]' : 'text-[#0C0C0E]'
+              }`}
               style={{ fontFamily: "'Syne', sans-serif", fontWeight: 900 }}
             >
               N.
             </span>
           </a>
 
-          {/* Desktop Navigation: Links only */}
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-7 lg:gap-10">
             {navLinks.map((link) => {
               const isActive = activeSection === link.href.replace('#', '');
@@ -117,7 +160,13 @@ export default function Navbar() {
                   onClick={(e) => handleLinkClick(e, link.href)}
                   data-cursor="GOTO"
                   className={`text-xs font-mono font-bold tracking-[0.15em] transition-all duration-200 relative py-1 ${
-                    isActive ? 'text-[#0C0C0E]' : 'text-[#0C0C0E]/70 hover:text-[#0C0C0E]'
+                    isDarkMode
+                      ? isActive
+                        ? 'text-[#E53E3E]'
+                        : 'text-white/80 hover:text-[#E53E3E]'
+                      : isActive
+                      ? 'text-[#0C0C0E]'
+                      : 'text-[#0C0C0E]/70 hover:text-[#0C0C0E]'
                   }`}
                   style={{
                     fontFamily: "'Space Grotesk', monospace",
@@ -128,8 +177,9 @@ export default function Navbar() {
                   {link.name}
                   {isActive && (
                     <span
-                      className="absolute bottom-0 left-0 w-full h-[2px] bg-[#0C0C0E]"
-                      style={{ height: '2px', backgroundColor: '#0C0C0E' }}
+                      className={`absolute bottom-0 left-0 w-full h-[2px] ${
+                        isDarkMode ? 'bg-[#E53E3E]' : 'bg-[#0C0C0E]'
+                      }`}
                     />
                   )}
                 </a>
@@ -143,18 +193,9 @@ export default function Navbar() {
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               data-cursor="MENU"
               aria-label="Toggle navigation menu"
-              className="w-10 h-10 rounded-full bg-[#0C0C0E] text-white flex items-center justify-center hover:scale-105 transition-transform duration-200 shadow-sm"
-              style={{
-                width: '2.5rem',
-                height: '2.5rem',
-                borderRadius: '9999px',
-                backgroundColor: '#0C0C0E',
-                color: '#ffffff',
-                border: 'none',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
+              className={`w-10 h-10 rounded-full flex items-center justify-center hover:scale-105 transition-transform duration-200 shadow-sm ${
+                isDarkMode ? 'bg-white text-black' : 'bg-[#0C0C0E] text-white'
+              }`}
             >
               {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
@@ -165,34 +206,22 @@ export default function Navbar() {
       {/* Mobile Drawer Overlay */}
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 z-50 bg-[#0C0C0E]/96 text-white flex flex-col justify-between p-8 sm:p-12 md:hidden transition-opacity duration-300 backdrop-blur-xl animate-fadeIn"
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 50,
-            backgroundColor: 'rgba(12, 12, 14, 0.96)',
-            color: '#ffffff',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            padding: '2.5rem'
-          }}
+          className={`fixed inset-0 z-50 flex flex-col justify-between p-8 sm:p-12 md:hidden transition-opacity duration-300 backdrop-blur-xl animate-fadeIn ${
+            isDarkMode ? 'bg-[#060608]/98 text-white' : 'bg-[#0C0C0E]/96 text-white'
+          }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-4xl font-display font-black tracking-tighter" style={{ fontFamily: "'Syne', sans-serif" }}>
+            <span
+              className={`text-4xl font-display font-black tracking-tighter ${
+                isDarkMode ? 'text-[#E53E3E]' : 'text-white'
+              }`}
+              style={{ fontFamily: "'Syne', sans-serif" }}
+            >
               N.
             </span>
             <button
               onClick={() => setMobileMenuOpen(false)}
-              className="w-11 h-11 rounded-full bg-white/10 text-[#ffffff] flex items-center justify-center hover:bg-white/20 transition-colors"
-              style={{
-                width: '2.75rem',
-                height: '2.75rem',
-                borderRadius: '9999px',
-                backgroundColor: 'rgba(255, 255, 255, 0.15)',
-                border: 'none',
-                color: '#fff'
-              }}
+              className="w-11 h-11 rounded-full bg-white/15 text-white flex items-center justify-center hover:bg-white/25 transition-colors"
             >
               <X size={22} />
             </button>
@@ -204,11 +233,12 @@ export default function Navbar() {
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleLinkClick(e, link.href)}
-                className="text-3xl sm:text-4xl font-display font-extrabold tracking-tight text-white/90 hover:text-[#2E828F] transition-colors py-2 flex items-center justify-between border-b border-white/10"
+                className={`text-3xl sm:text-4xl font-display font-extrabold tracking-tight transition-colors py-2 flex items-center justify-between border-b border-white/10 ${
+                  isDarkMode ? 'text-white/90 hover:text-[#E53E3E]' : 'text-white/90 hover:text-[#2E828F]'
+                }`}
                 style={{
                   fontFamily: "'Oswald', 'Syne', sans-serif",
-                  textDecoration: 'none',
-                  color: 'rgba(255, 255, 255, 0.9)'
+                  textDecoration: 'none'
                 }}
               >
                 <span>{link.name}</span>

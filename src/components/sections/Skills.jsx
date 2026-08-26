@@ -53,14 +53,14 @@ export const SKILLS_DATA = [
   { name: 'Hardware Problem Solving', category: 'ROBOTICS', iconFallback: '🛠️' }
 ];
 
-export default function Skills() {
+export default function Skills({ isDarkMode }) {
   const [hoveredSkill, setHoveredSkill] = useState(null);
   const totalSkillsCount = SKILLS_DATA.length;
 
   // Split into 3 immersive alternating streams
-  const row1 = SKILLS_DATA.slice(0, 13);
-  const row2 = SKILLS_DATA.slice(13, 25);
-  const row3 = SKILLS_DATA.slice(25);
+  const row1 = SKILLS_DATA.slice(0, 12);
+  const row2 = SKILLS_DATA.slice(12, 24);
+  const row3 = SKILLS_DATA.slice(24);
 
   const renderIcon = (skill) => {
     if (skill.iconUrl) {
@@ -68,14 +68,16 @@ export default function Skills() {
         <img
           src={skill.iconUrl}
           alt={skill.name}
-          className="w-8 h-8 sm:w-10 sm:h-10 object-contain drop-shadow-sm transition-transform duration-300 group-hover:scale-115"
-          onError={(e) => { e.target.style.display = 'none'; }}
+          className={`w-9 h-9 sm:w-11 sm:h-11 object-contain filter drop-shadow-sm transition-transform duration-300 group-hover:scale-110 ${
+            isDarkMode && skill.name === 'Next.js' ? 'invert' : ''
+          }`}
+          loading="lazy"
         />
       );
     }
     return (
-      <span className="text-2xl sm:text-3xl select-none transition-transform duration-300 group-hover:scale-115">
-        {skill.iconFallback || '✨'}
+      <span className="text-2xl sm:text-3xl select-none filter drop-shadow-sm transform transition-transform duration-300 group-hover:scale-110">
+        {skill.iconFallback || '⚡'}
       </span>
     );
   };
@@ -83,14 +85,20 @@ export default function Skills() {
   return (
     <section
       id="skills"
-      className="py-24 sm:py-32 bg-[#F4EFEA] text-[#0C0C0E] border-b border-black/[0.08] relative overflow-hidden select-none"
-      style={{ backgroundColor: '#F4EFEA' }}
+      className={`py-24 sm:py-32 transition-colors duration-500 relative overflow-hidden select-none ${
+        isDarkMode
+          ? 'bg-[#060608] text-white border-b border-white/10'
+          : 'bg-[#F4EFEA] text-[#0C0C0E] border-b border-black/[0.08]'
+      }`}
+      style={{ backgroundColor: isDarkMode ? '#060608' : '#F4EFEA' }}
     >
       {/* Section Header */}
       <div className="max-w-7xl mx-auto px-6 sm:px-12 mb-14 sm:mb-16">
         <div className="flex items-center gap-3 mb-3">
           <span
-            className="text-xs font-mono font-bold tracking-[0.25em] text-[#2E828F] uppercase"
+            className={`text-xs font-mono font-bold tracking-[0.25em] uppercase ${
+              isDarkMode ? 'text-[#E53E3E]' : 'text-[#2E828F]'
+            }`}
             style={{ fontFamily: "'Space Grotesk', monospace" }}
           >
             04 / CAPABILITIES & ARSENAL
@@ -99,27 +107,46 @@ export default function Skills() {
         
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <h2
-            className="text-5xl sm:text-6xl md:text-7xl font-black font-display tracking-tight text-[#0C0C0E] leading-none"
+            className={`text-5xl sm:text-6xl md:text-7xl font-black font-display tracking-tight leading-none flex items-baseline gap-1 ${
+              isDarkMode ? 'text-white' : 'text-[#0C0C0E]'
+            }`}
             style={{ fontFamily: "'Oswald', 'Syne', sans-serif" }}
           >
-            TOOLS & CRAFT.
+            <span>TOOLS & CRAFT</span>
+            <span className={`inline-block w-3.5 h-3.5 sm:w-4 sm:h-4 ml-1 ${
+              isDarkMode ? 'bg-[#E53E3E]' : 'bg-[#2E828F]'
+            }`} />
           </h2>
 
           {/* DYNAMIC SKILLS COUNTER TEXT */}
           <div className="flex items-center gap-2 pb-1">
-            <p className="text-sm sm:text-base font-mono text-[#0C0C0E]/80 font-semibold">
-              Skilled in <span className="text-[#2E828F]">{totalSkillsCount} skills</span> in different categories
+            <p className={`text-sm sm:text-base font-mono font-semibold ${
+              isDarkMode ? 'text-white/90' : 'text-[#0C0C0E]/80'
+            }`}>
+              Skilled in{' '}
+              <span className={isDarkMode ? 'text-[#E53E3E]' : 'text-[#2E828F]'}>
+                {totalSkillsCount} skills
+              </span>{' '}
+              in different categories
             </p>
           </div>
         </div>
       </div>
 
-      {/* IMMERSIVE INFINITE STREAM MARQUEE (NO BOX CONTAINERS, PURE STREAMING LOGOS & TITLES) */}
+      {/* IMMERSIVE INFINITE STREAM MARQUEE */}
       <div className="relative w-full space-y-6 sm:space-y-8 overflow-hidden py-4">
         
         {/* Left & Right Gradient Fade Edges */}
-        <div className="absolute top-0 bottom-0 left-0 w-24 sm:w-48 bg-gradient-to-r from-[#F4EFEA] to-transparent z-20 pointer-events-none" />
-        <div className="absolute top-0 bottom-0 right-0 w-24 sm:w-48 bg-gradient-to-l from-[#F4EFEA] to-transparent z-20 pointer-events-none" />
+        <div className={`absolute top-0 bottom-0 left-0 w-24 sm:w-48 z-20 pointer-events-none ${
+          isDarkMode
+            ? 'bg-gradient-to-r from-[#060608] to-transparent'
+            : 'bg-gradient-to-r from-[#F4EFEA] to-transparent'
+        }`} />
+        <div className={`absolute top-0 bottom-0 right-0 w-24 sm:w-48 z-20 pointer-events-none ${
+          isDarkMode
+            ? 'bg-gradient-to-l from-[#060608] to-transparent'
+            : 'bg-gradient-to-l from-[#F4EFEA] to-transparent'
+        }`} />
 
         {/* Row 1: Gliding Left */}
         <div className="flex w-max animate-stream-left hover:[animation-play-state:paused]">
@@ -135,16 +162,22 @@ export default function Skills() {
               </div>
               <div>
                 <span
-                  className="text-xl sm:text-2xl md:text-3xl font-black font-display tracking-tight text-[#0C0C0E] group-hover:text-[#2E828F] transition-colors uppercase block leading-none"
+                  className={`text-xl sm:text-2xl md:text-3xl font-black font-display tracking-tight uppercase block leading-none transition-colors ${
+                    isDarkMode ? 'text-white group-hover:text-[#E53E3E]' : 'text-[#0C0C0E] group-hover:text-[#2E828F]'
+                  }`}
                   style={{ fontFamily: "'Oswald', sans-serif" }}
                 >
                   {skill.name}
                 </span>
-                <span className="text-[10px] font-mono text-[#0C0C0E]/50 tracking-widest uppercase">
+                <span className={`text-[10px] font-mono tracking-widest uppercase ${
+                  isDarkMode ? 'text-white/50' : 'text-[#0C0C0E]/50'
+                }`}>
                   {skill.category}
                 </span>
               </div>
-              <span className="text-black/20 text-lg ml-4 select-none">•</span>
+              <span className={`text-lg ml-4 select-none ${
+                isDarkMode ? 'text-[#E53E3E]' : 'text-black/20'
+              }`}>•</span>
             </div>
           ))}
         </div>
@@ -163,16 +196,22 @@ export default function Skills() {
               </div>
               <div>
                 <span
-                  className="text-xl sm:text-2xl md:text-3xl font-black font-display tracking-tight text-[#0C0C0E] group-hover:text-[#2E828F] transition-colors uppercase block leading-none"
+                  className={`text-xl sm:text-2xl md:text-3xl font-black font-display tracking-tight uppercase block leading-none transition-colors ${
+                    isDarkMode ? 'text-white group-hover:text-[#E53E3E]' : 'text-[#0C0C0E] group-hover:text-[#2E828F]'
+                  }`}
                   style={{ fontFamily: "'Oswald', sans-serif" }}
                 >
                   {skill.name}
                 </span>
-                <span className="text-[10px] font-mono text-[#0C0C0E]/50 tracking-widest uppercase">
+                <span className={`text-[10px] font-mono tracking-widest uppercase ${
+                  isDarkMode ? 'text-white/50' : 'text-[#0C0C0E]/50'
+                }`}>
                   {skill.category}
                 </span>
               </div>
-              <span className="text-black/20 text-lg ml-4 select-none">•</span>
+              <span className={`text-lg ml-4 select-none ${
+                isDarkMode ? 'text-[#E53E3E]' : 'text-black/20'
+              }`}>•</span>
             </div>
           ))}
         </div>
@@ -191,16 +230,22 @@ export default function Skills() {
               </div>
               <div>
                 <span
-                  className="text-xl sm:text-2xl md:text-3xl font-black font-display tracking-tight text-[#0C0C0E] group-hover:text-[#2E828F] transition-colors uppercase block leading-none"
+                  className={`text-xl sm:text-2xl md:text-3xl font-black font-display tracking-tight uppercase block leading-none transition-colors ${
+                    isDarkMode ? 'text-white group-hover:text-[#E53E3E]' : 'text-[#0C0C0E] group-hover:text-[#2E828F]'
+                  }`}
                   style={{ fontFamily: "'Oswald', sans-serif" }}
                 >
                   {skill.name}
                 </span>
-                <span className="text-[10px] font-mono text-[#0C0C0E]/50 tracking-widest uppercase">
+                <span className={`text-[10px] font-mono tracking-widest uppercase ${
+                  isDarkMode ? 'text-white/50' : 'text-[#0C0C0E]/50'
+                }`}>
                   {skill.category}
                 </span>
               </div>
-              <span className="text-black/20 text-lg ml-4 select-none">•</span>
+              <span className={`text-lg ml-4 select-none ${
+                isDarkMode ? 'text-[#E53E3E]' : 'text-black/20'
+              }`}>•</span>
             </div>
           ))}
         </div>
@@ -208,13 +253,15 @@ export default function Skills() {
       </div>
 
       {/* Live Interactive Focus Strip */}
-      <div className="max-w-7xl mx-auto px-6 sm:px-12 mt-12 flex items-center justify-between text-xs font-mono text-[#0C0C0E]/60 pt-6 border-t border-black/10">
+      <div className={`max-w-7xl mx-auto px-6 sm:px-12 mt-12 flex items-center justify-between text-xs font-mono pt-6 border-t ${
+        isDarkMode ? 'text-white/60 border-white/10' : 'text-[#0C0C0E]/60 border-black/10'
+      }`}>
         <div className="flex items-center gap-2">
-          <Sparkles size={14} className="text-[#2E828F]" />
+          <Sparkles size={14} className={isDarkMode ? 'text-[#E53E3E]' : 'text-[#2E828F]'} />
           <span>
             {hoveredSkill ? (
               <>
-                EXPLORING <strong className="text-[#0C0C0E] uppercase">{hoveredSkill.name}</strong> ({hoveredSkill.category})
+                EXPLORING <strong className={isDarkMode ? 'text-white uppercase' : 'text-[#0C0C0E] uppercase'}>{hoveredSkill.name}</strong> ({hoveredSkill.category})
               </>
             ) : (
               'HOVER ANY SKILL TO PAUSE & INSPECT'

@@ -41,7 +41,7 @@ function YoutubeIcon({ size = 16 }) {
   );
 }
 
-export default function SocialSidebar() {
+export default function SocialSidebar({ isDarkMode }) {
   const getIcon = (name) => {
     switch (name.toLowerCase()) {
       case 'github':
@@ -73,13 +73,17 @@ export default function SocialSidebar() {
             rel="noopener noreferrer"
             data-cursor={social.name.toUpperCase()}
             aria-label={`Nitto Joshi on ${social.name}`}
-            className="w-8 h-8 rounded-full flex items-center justify-center text-[#0C0C0E]/70 hover:text-[#2E828F] hover:scale-115 transition-all duration-200 group relative no-underline"
+            className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 group relative no-underline ${
+              isDarkMode
+                ? 'text-white/70 hover:text-[#E53E3E] hover:scale-115'
+                : 'text-[#0C0C0E]/70 hover:text-[#2E828F] hover:scale-115'
+            }`}
           >
             {getIcon(social.name)}
           </a>
           {index < PERSONAL_INFO.socials.length - 1 && (
             <div
-              className="w-[1px] h-4 bg-black/25"
+              className={`w-[1px] h-4 ${isDarkMode ? 'bg-white/20' : 'bg-black/25'}`}
             />
           )}
         </React.Fragment>
