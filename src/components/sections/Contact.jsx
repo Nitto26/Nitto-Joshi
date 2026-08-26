@@ -58,7 +58,7 @@ export default function Contact() {
       <style>{`
         @keyframes walkLeftToRight {
           0% {
-            transform: translateX(-200px);
+            transform: translateX(-165px);
           }
           100% {
             transform: translateX(100vw);
@@ -263,7 +263,7 @@ export default function Contact() {
             height: '98px',
             pointerEvents: 'none',
             zIndex: 30,
-            animation: 'walkLeftToRight 18s linear infinite',
+            animation: 'walkLeftToRight 15s linear infinite',
             willChange: 'transform',
           }}
         >

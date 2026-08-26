@@ -86,7 +86,7 @@ export default function Hero() {
     <section
       id="hero"
       ref={containerRef}
-      className="relative min-h-screen flex items-center justify-center pt-24 pb-12 px-6 sm:px-12 lg:px-24 overflow-hidden bg-[#FAF9F6]"
+      className="relative min-h-screen flex flex-col justify-between pt-20 pb-0 sm:pt-24 sm:pb-12 px-6 sm:px-12 lg:px-24 overflow-hidden bg-[#FAF9F6]"
       style={{
         backgroundColor: '#FAF9F6',
         minHeight: '100vh',
@@ -169,11 +169,11 @@ export default function Hero() {
         </div>
 
         {/* Right Column: Hero Cutout PNG & Graphic Elements */}
-        <div className="lg:col-span-6 relative flex items-center justify-center min-h-[500px] lg:min-h-[640px]">
+        <div className="lg:col-span-6 relative flex items-end justify-center min-h-[340px] sm:min-h-[460px] lg:min-h-[640px] mt-4 lg:mt-0 pb-0">
           
           {/* Circular Brush Paint Texture Behind Nitto */}
           <div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] sm:w-[460px] lg:w-[520px] h-[340px] sm:h-[460px] lg:h-[520px] rounded-full pointer-events-none -z-0"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[270px] sm:w-[420px] lg:w-[520px] h-[270px] sm:h-[420px] lg:h-[520px] rounded-full pointer-events-none -z-0"
             style={{
               background: 'radial-gradient(circle at 45% 45%, rgba(225, 222, 218, 0.9) 0%, rgba(235, 232, 228, 0.6) 45%, rgba(250, 249, 246, 0) 72%)',
               border: '24px solid rgba(220, 216, 210, 0.45)',
@@ -183,7 +183,7 @@ export default function Hero() {
 
           {/* Upper Right Code Symbol: </> */}
           <div
-            className="absolute top-6 right-2 sm:right-6 z-20 text-[#0C0C0E] font-mono text-xl sm:text-2xl font-bold tracking-widest select-none"
+            className="absolute top-2 right-2 sm:top-6 sm:right-6 z-20 text-[#0C0C0E] font-mono text-xl sm:text-2xl font-bold tracking-widest select-none"
             style={{ fontFamily: "'Space Grotesk', monospace" }}
           >
             &lt;/&gt;
@@ -202,7 +202,7 @@ export default function Hero() {
 
           {/* Bottom Left Brush Stroke Scribble */}
           <svg
-            className="absolute bottom-6 left-2 sm:left-8 w-20 sm:w-28 h-12 text-[#9A9690] opacity-60 z-20 pointer-events-none"
+            className="absolute bottom-6 left-2 sm:left-8 w-16 sm:w-28 h-10 sm:h-12 text-[#9A9690] opacity-60 z-20 pointer-events-none"
             viewBox="0 0 100 40"
             fill="none"
             stroke="currentColor"
@@ -215,7 +215,7 @@ export default function Hero() {
 
           {/* Cutout PNG Container */}
           <div
-            className={`relative w-full max-w-[420px] sm:max-w-[480px] lg:max-w-[540px] flex items-end justify-center cursor-pointer select-none transition-transform duration-300 z-10 ${
+            className={`relative w-full max-w-[290px] xs:max-w-[340px] sm:max-w-[460px] lg:max-w-[540px] flex items-end justify-center cursor-pointer select-none transition-transform duration-300 z-10 ${
               isHit ? 'shake-active' : ''
             }`}
             style={{
@@ -226,12 +226,12 @@ export default function Hero() {
             aria-label="Nitto Joshi interactive portrait - Tap head"
           >
             {/* Dual Images Loaded in DOM for 0ms Instant Swap on Vercel */}
-            <div className="relative w-auto max-h-[500px] sm:max-h-[580px] lg:max-h-[640px]">
+            <div className="relative w-auto max-h-[350px] xs:max-h-[400px] sm:max-h-[540px] lg:max-h-[640px] flex items-end">
               {/* Default Hero Image (hero1.png) */}
               <img
                 src={hero1Img}
                 alt="Nitto Joshi"
-                className={`w-auto max-h-[500px] sm:max-h-[580px] lg:max-h-[640px] object-contain drop-shadow-2xl transition-opacity duration-100 ${
+                className={`w-auto max-h-[350px] xs:max-h-[400px] sm:max-h-[540px] lg:max-h-[640px] object-contain object-bottom drop-shadow-2xl transition-opacity duration-100 ${
                   isHit ? 'opacity-0 absolute inset-0 pointer-events-none' : 'opacity-100 relative'
                 }`}
                 style={{
@@ -243,7 +243,7 @@ export default function Hero() {
               <img
                 src={hero2Img}
                 alt="Nitto Joshi reacting: OWCH!"
-                className={`w-auto max-h-[500px] sm:max-h-[580px] lg:max-h-[640px] object-contain drop-shadow-2xl transition-opacity duration-100 ${
+                className={`w-auto max-h-[350px] xs:max-h-[400px] sm:max-h-[540px] lg:max-h-[640px] object-contain object-bottom drop-shadow-2xl transition-opacity duration-100 ${
                   isHit ? 'opacity-100 relative scale-103 brightness-95' : 'opacity-0 absolute inset-0 pointer-events-none'
                 }`}
                 style={{
