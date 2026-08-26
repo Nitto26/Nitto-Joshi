@@ -71,10 +71,10 @@ export default function About({ isDarkMode }) {
       />
 
       {/* Top Header Bar */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-row items-start sm:items-center justify-between gap-4 pb-2">
+      <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-row items-start sm:items-center justify-between gap-2 sm:gap-4 pb-2">
 
         {/* Top Left: Design Taglines */}
-        <div className={`flex items-center gap-3 sm:gap-6 text-xs sm:text-sm font-sans tracking-wide pl-2 sm:pl-8 ${
+        <div className={`flex flex-wrap items-center gap-2 sm:gap-6 text-[11px] sm:text-sm font-sans tracking-wide pl-2 sm:pl-8 ${
           isDarkMode ? 'text-white/80' : 'text-[#0C0C0E]/80'
         }`}>
           <span>Random</span>

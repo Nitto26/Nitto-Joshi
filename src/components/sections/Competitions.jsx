@@ -349,21 +349,17 @@ export default function Competitions() {
       }}>
 
         {/* Content row: left text + right card queue */}
-        <div style={{
-          width: '100%',
-          display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between',
-          padding: '0 0 88px 4%',
-        }}>
+        <div className="w-full flex flex-col lg:flex-row lg:items-end justify-between gap-6 lg:gap-8 px-4 sm:px-8 lg:px-0 lg:pl-[4%] pb-20 sm:pb-24 lg:pb-[88px]">
 
           {/* ── LEFT TEXT ────────────────────────────────────────── */}
-          <div style={{
-            maxWidth: '440px',
-            display: 'flex', flexDirection: 'column', gap: '12px',
-            opacity:   textVisible ? 1 : 0,
-            transform: textVisible ? 'translateY(0)' : 'translateY(20px)',
-            transition: 'opacity 0.24s ease, transform 0.24s ease',
-            flexShrink: 0,
-          }}>
+          <div
+            className="w-full lg:max-w-[440px] flex flex-col gap-2.5 sm:gap-3 flex-shrink"
+            style={{
+              opacity:   textVisible ? 1 : 0,
+              transform: textVisible ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'opacity 0.24s ease, transform 0.24s ease',
+            }}
+          >
             {/* Eyebrow */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <span style={{ width: '28px', height: '1.5px', background: '#e8c840', flexShrink: 0 }} />
@@ -381,7 +377,7 @@ export default function Competitions() {
             {/* Big title */}
             <h2 style={{
               fontFamily: "'Oswald', 'Barlow Condensed', sans-serif",
-              fontSize: 'clamp(2.6rem, 5.5vw, 4.2rem)',
+              fontSize: 'clamp(2.0rem, 5.5vw, 4.2rem)',
               fontWeight: 700, color: '#ffffff',
               lineHeight: 1.0, textTransform: 'uppercase',
               letterSpacing: '-0.01em', margin: 0, whiteSpace: 'pre-line',
@@ -393,11 +389,12 @@ export default function Competitions() {
             {/* Description */}
             <p style={{
               fontFamily: "'Inter', sans-serif",
-              fontSize: 'clamp(13px, 1.2vw, 14.5px)',
+              fontSize: 'clamp(12px, 3.2vw, 14.5px)',
               color: '#ffffff',
               fontWeight: 500,
-              lineHeight: 1.6,
-              maxWidth: '380px',
+              lineHeight: 1.55,
+              maxWidth: '100%',
+              width: '100%',
               margin: 0,
               textShadow: '0 2px 8px rgba(0,0,0,0.95), 0 1px 3px rgba(0,0,0,0.9)',
             }}>
