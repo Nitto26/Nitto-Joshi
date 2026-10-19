@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowUpRight, Check, Mail, MapPin, Phone, Sparkles } from 'lucide-react';
-import confetti from 'canvas-confetti';
 import lottie from 'lottie-web';
 import { PERSONAL_INFO } from '../../data/portfolioData';
 import stickmanAnimation from '../../assets/stickman.json';
+import Lanyard from './Lanyard';
 
 export default function Contact() {
   const [copied, setCopied] = useState(false);
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [status, setStatus] = useState('');
   const lottieRef = useRef(null);
 
   useEffect(() => {
@@ -29,28 +27,6 @@ export default function Contact() {
     navigator.clipboard.writeText('nittojoshi@example.com');
     setCopied(true);
     setTimeout(() => setCopied(false), 2200);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) {
-      setStatus('Please fill in all fields.');
-      return;
-    }
-
-    setStatus('Message registered! Thank you for reaching out.');
-
-    try {
-      confetti({
-        particleCount: 35,
-        spread: 65,
-        origin: { y: 0.75 },
-        colors: ['#2E828F', '#FFFFFF', '#141416']
-      });
-    } catch (e) {}
-
-    setFormData({ name: '', email: '', message: '' });
-    setTimeout(() => setStatus(''), 4500);
   };
 
   return (
@@ -218,62 +194,16 @@ export default function Contact() {
 
           </div>
 
-          {/* Right Column: Glassmorphic Interactive Form */}
-          <div className="lg:col-span-7">
-            <div className="contact-form-box bg-[#121316]/90 border border-white/10 rounded-[20px] sm:rounded-[24px] lg:rounded-[28px] p-5 sm:p-6 lg:p-8 xl:p-10 shadow-2xl backdrop-blur-xl">
-              <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4 lg:space-y-5">
-                
-                {/* Name Input */}
-                <div>
-                  <input
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="Name"
-                    className="w-full px-3.5 py-2.5 sm:px-4 sm:py-3 lg:px-5 lg:py-3.5 rounded-xl bg-[#1A1B1F] border border-white/10 text-white placeholder-white/40 text-xs sm:text-sm lg:text-base font-sans focus:outline-none focus:border-[#2E828F] focus:ring-1 focus:ring-[#2E828F] transition-all"
-                  />
-                </div>
-
-                {/* Email Input */}
-                <div>
-                  <input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="Email"
-                    className="w-full px-3.5 py-2.5 sm:px-4 sm:py-3 lg:px-5 lg:py-3.5 rounded-xl bg-[#1A1B1F] border border-white/10 text-white placeholder-white/40 text-xs sm:text-sm lg:text-base font-sans focus:outline-none focus:border-[#2E828F] focus:ring-1 focus:ring-[#2E828F] transition-all"
-                  />
-                </div>
-
-                {/* Message Textarea */}
-                <div>
-                  <textarea
-                    rows={4}
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    placeholder="Message"
-                    className="w-full px-3.5 py-2.5 sm:px-4 sm:py-3 lg:px-5 lg:py-3.5 rounded-xl bg-[#1A1B1F] border border-white/10 text-white placeholder-white/40 text-xs sm:text-sm lg:text-base font-sans focus:outline-none focus:border-[#2E828F] focus:ring-1 focus:ring-[#2E828F] transition-all resize-none"
-                  />
-                </div>
-
-                {/* Submit Button */}
-                <div className="pt-1">
-                  <button
-                    type="submit"
-                    className="w-full py-3 sm:py-3.5 lg:py-4 rounded-xl bg-white text-black font-sans text-xs sm:text-sm lg:text-base font-bold tracking-wide hover:bg-white/90 active:scale-[0.99] transition-all duration-200 shadow-xl cursor-pointer"
-                  >
-                    Submit
-                  </button>
-                </div>
-
-                {/* Status Indicator */}
-                {status && (
-                  <p className="text-xs sm:text-sm font-mono text-[#2E828F] text-center pt-1 animate-fadeIn">
-                    {status}
-                  </p>
-                )}
-
-              </form>
+          {/* Right Column: Interactive 3D Lanyard Card */}
+          <div className="lg:col-span-7 flex justify-center items-center w-full">
+            <div className="relative w-full h-[550px] sm:h-[600px] flex items-center justify-center">
+              <Lanyard
+                frontImage="/card-front.png?v=2"
+                backImage="/card-back.png?v=2"
+                strapImage="/band.png?v=2"
+                cardColor="#ffffff"
+                finish="glossy"
+              />
             </div>
           </div>
 
