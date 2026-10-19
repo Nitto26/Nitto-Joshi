@@ -198,9 +198,9 @@ export default function Contact() {
           <div className="lg:col-span-7 flex justify-center items-center w-full">
             <div className="relative w-full h-[550px] sm:h-[600px] flex items-center justify-center">
               <Lanyard
-                frontImage="/card-front.png?v=2"
-                backImage="/card-back.png?v=2"
-                strapImage="/band.png?v=2"
+                frontImage="/card-front.png?v=3"
+                backImage="/card-back.png?v=3"
+                strapImage="/band.png?v=4"
                 cardColor="#ffffff"
                 finish="glossy"
               />
