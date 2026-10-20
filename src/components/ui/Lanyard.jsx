@@ -914,7 +914,7 @@ const Lanyard = ({
     const frameView = () => {
       const s = settingsRef.current;
       const aspect = view.width / view.height;
-      let viewHeight = layout.height / clamp(s.size, 0.15, 0.9);
+      let viewHeight = layout.height / clamp(s.size, 0.15, 1.0);
       const minimumWidth = layout.width / 0.72;
       if (viewHeight * aspect < minimumWidth) viewHeight = minimumWidth / aspect;
       const viewWidth = viewHeight * aspect;
@@ -1199,7 +1199,7 @@ const Lanyard = ({
         from: hit.point.clone(),
         target: hit.point.clone()
       };
-      press = { x: event.clientX, y: event.clientY, time: performance.now(), point: hit.point.clone() };
+      press = { x: event.clientX, y: event.clientY, time: performance.now(), point: hit.point.clone(), hit };
       canvas.setPointerCapture?.(event.pointerId);
       setCursor('grabbing');
       event.preventDefault();
@@ -1216,14 +1216,49 @@ const Lanyard = ({
         return;
       }
       if (event.pointerType === 'touch') return;
-      hovering = !!pickCard();
+      const hit = pickCard();
+      hovering = !!hit;
+      if (hovering) {
+        const normal = scratch.a.set(0, 0, 1).applyQuaternion(sim.body.quaternion);
+        const isBackFacing = normal.z < 0 || hit.object === backMesh;
+        const uvY = hit.uv?.y;
+        if (isBackFacing && uvY !== undefined && uvY >= 0.08 && uvY <= 0.78) {
+          setCursor('pointer');
+          return;
+        }
+      }
       setCursor(hovering ? 'grab' : '');
     };
 
     const onPointerUp = event => {
       if (!sim.grab) return;
       sim.grab = null;
-      if (press && event.type === 'pointerup' && performance.now() - press.time < 450) flip(press.point);
+      if (press && (event.type === 'pointerup' || event.type === 'touchend') && performance.now() - press.time < 450) {
+        const normal = scratch.a.set(0, 0, 1).applyQuaternion(sim.body.quaternion);
+        const isBackFacing = normal.z < 0 || press.hit?.object === backMesh;
+        const uvY = press.hit?.uv?.y;
+
+        if (isBackFacing && uvY !== undefined) {
+          if (uvY >= 0.60 && uvY <= 0.78) {
+            window.location.href = 'mailto:nittojoshy1234@gmail.com';
+            press = null;
+            return;
+          } else if (uvY >= 0.43 && uvY < 0.60) {
+            window.open('https://www.linkedin.com/in/nitto-joshi-a7b79a316?utm_source=share_via&utm_content=profile&utm_medium=member_android', '_blank', 'noopener,noreferrer');
+            press = null;
+            return;
+          } else if (uvY >= 0.26 && uvY < 0.43) {
+            window.open('https://github.com/Nitto26', '_blank', 'noopener,noreferrer');
+            press = null;
+            return;
+          } else if (uvY >= 0.08 && uvY < 0.26) {
+            window.open('https://maps.app.goo.gl/Rs41AxYiAAUdnSmA6', '_blank', 'noopener,noreferrer');
+            press = null;
+            return;
+          }
+        }
+        flip(press.point);
+      }
       press = null;
       canvas.releasePointerCapture?.(event.pointerId);
       setCursor(hovering && event.pointerType !== 'touch' ? 'grab' : '');

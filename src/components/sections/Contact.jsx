@@ -1,12 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { ArrowUpRight, Check, Mail, MapPin, Phone, Sparkles } from 'lucide-react';
+import React, { useEffect, useRef } from 'react';
 import lottie from 'lottie-web';
-import { PERSONAL_INFO } from '../../data/portfolioData';
 import stickmanAnimation from '../../assets/stickman.json';
 import Lanyard from './Lanyard';
 
 export default function Contact() {
-  const [copied, setCopied] = useState(false);
   const lottieRef = useRef(null);
 
   useEffect(() => {
@@ -22,12 +19,6 @@ export default function Contact() {
 
     return () => anim.destroy();
   }, []);
-
-  const copyEmail = () => {
-    navigator.clipboard.writeText('nittojoshi@example.com');
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2200);
-  };
 
   return (
     <>
@@ -97,112 +88,35 @@ export default function Contact() {
         {/* Main Section Content (VERTICALLY CENTERED ON DESKTOP) */}
         <div className="contact-container max-w-4xl sm:max-w-5xl lg:max-w-6xl xl:max-w-7xl mx-auto w-full relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 xl:gap-16 items-center my-auto">
           
-          {/* Left Column: Headline & Direct Contact Cards */}
-          <div className="lg:col-span-5 space-y-3.5 sm:space-y-4 lg:space-y-6">
+          {/* Left Column: Headline */}
+          <div className="lg:col-span-5 space-y-4 lg:space-y-6 text-center lg:text-left">
             
-            {/* Eyebrow Pill Badge */}
-            <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.06] border border-white/12 text-xs lg:text-sm font-mono font-medium text-white/80 backdrop-blur-md">
-                <Sparkles size={13} className="text-[#2E828F]" />
-                <span>Contact</span>
-              </div>
-            </div>
-
             {/* Heading & Subtitle */}
-            <div className="space-y-1.5 lg:space-y-2.5">
+            <div className="space-y-2 lg:space-y-3">
               <h2
                 className="contact-heading text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold font-display text-white tracking-tight leading-tight"
                 style={{ fontFamily: "'Syne', sans-serif" }}
               >
                 Get in touch
               </h2>
-              <p className="text-xs sm:text-sm lg:text-base font-sans text-white/60 leading-relaxed max-w-xs sm:max-w-sm lg:max-w-md">
-                Have questions or ready to transform your ideas into exceptional software solutions?
+              <p className="text-xs sm:text-sm lg:text-base font-sans text-white/60 leading-relaxed max-w-xs sm:max-w-sm lg:max-w-md mx-auto lg:mx-0">
+                Have questions or ready to collaborate? Click or drag the access pass to flip and reveal all contact details.
               </p>
-            </div>
-
-            {/* 3 Info Cards */}
-            <div className="space-y-2.5 sm:space-y-3 lg:space-y-3.5 pt-1">
-              
-              {/* Card 1: Email us */}
-              <div
-                onClick={copyEmail}
-                className="contact-info-card bg-[#121316]/90 border border-white/10 hover:border-[#2E828F]/60 rounded-xl lg:rounded-2xl p-3 sm:p-3.5 lg:p-4 xl:p-5 flex items-center justify-between transition-all duration-300 group cursor-pointer shadow-lg backdrop-blur-xl"
-              >
-                <div className="flex items-center gap-3 lg:gap-4.5">
-                  <div className="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 rounded-lg lg:rounded-xl bg-white/[0.06] border border-white/10 flex items-center justify-center text-white group-hover:border-[#2E828F] group-hover:text-[#2E828F] transition-all shrink-0">
-                    <Mail size={16} className="lg:w-5 lg:h-5" />
-                  </div>
-                  <div className="min-w-0">
-                    <h4 className="text-[10px] lg:text-xs font-mono text-white/50 uppercase tracking-wider">Email us</h4>
-                    <p className="text-xs sm:text-sm lg:text-base font-sans font-medium text-white group-hover:text-[#2E828F] transition-colors truncate">
-                      nittojoshi@example.com
-                    </p>
-                  </div>
-                </div>
-
-                <div className="w-7 h-7 sm:w-8 sm:h-8 lg:w-9 lg:h-9 rounded-full bg-white/[0.06] flex items-center justify-center text-white/60 group-hover:text-white group-hover:bg-[#2E828F] transition-all shrink-0 ml-2">
-                  {copied ? <Check size={14} className="text-green-400" /> : <ArrowUpRight size={14} className="lg:w-4 lg:h-4" />}
-                </div>
-              </div>
-
-              {/* Card 2: Call us / Direct */}
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="contact-info-card bg-[#121316]/90 border border-white/10 hover:border-[#2E828F]/60 rounded-xl lg:rounded-2xl p-3 sm:p-3.5 lg:p-4 xl:p-5 flex items-center justify-between transition-all duration-300 group cursor-pointer shadow-lg backdrop-blur-xl"
-                style={{ textDecoration: 'none' }}
-              >
-                <div className="flex items-center gap-3 lg:gap-4.5">
-                  <div className="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 rounded-lg lg:rounded-xl bg-white/[0.06] border border-white/10 flex items-center justify-center text-white group-hover:border-[#2E828F] group-hover:text-[#2E828F] transition-all shrink-0">
-                    <Phone size={16} className="lg:w-5 lg:h-5" />
-                  </div>
-                  <div className="min-w-0">
-                    <h4 className="text-[10px] lg:text-xs font-mono text-white/50 uppercase tracking-wider">Direct channel</h4>
-                    <p className="text-xs sm:text-sm lg:text-base font-sans font-medium text-white group-hover:text-[#2E828F] transition-colors truncate">
-                      LinkedIn / GitHub (@nittojoshi)
-                    </p>
-                  </div>
-                </div>
-
-                <div className="w-7 h-7 sm:w-8 sm:h-8 lg:w-9 lg:h-9 rounded-full bg-white/[0.06] flex items-center justify-center text-white/60 group-hover:text-white group-hover:bg-[#2E828F] transition-all shrink-0 ml-2">
-                  <ArrowUpRight size={14} className="lg:w-4 lg:h-4" />
-                </div>
-              </a>
-
-              {/* Card 3: Our location */}
-              <div className="contact-info-card bg-[#121316]/90 border border-white/10 hover:border-[#2E828F]/60 rounded-xl lg:rounded-2xl p-3 sm:p-3.5 lg:p-4 xl:p-5 flex items-center justify-between transition-all duration-300 group shadow-lg backdrop-blur-xl">
-                <div className="flex items-center gap-3 lg:gap-4.5">
-                  <div className="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 rounded-lg lg:rounded-xl bg-white/[0.06] border border-white/10 flex items-center justify-center text-white group-hover:border-[#2E828F] group-hover:text-[#2E828F] transition-all shrink-0">
-                    <MapPin size={16} className="lg:w-5 lg:h-5" />
-                  </div>
-                  <div className="min-w-0">
-                    <h4 className="text-[10px] lg:text-xs font-mono text-white/50 uppercase tracking-wider">Our location</h4>
-                    <p className="text-xs sm:text-sm lg:text-base font-sans font-medium text-white truncate">
-                      {PERSONAL_INFO.location}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="w-7 h-7 sm:w-8 sm:h-8 lg:w-9 lg:h-9 rounded-full bg-white/[0.06] flex items-center justify-center text-white/60 group-hover:text-white group-hover:bg-[#2E828F] transition-all shrink-0 ml-2">
-                  <ArrowUpRight size={14} className="lg:w-4 lg:h-4" />
-                </div>
-              </div>
-
             </div>
 
           </div>
 
           {/* Right Column: Interactive 3D Lanyard Card */}
           <div className="lg:col-span-7 flex justify-center items-center w-full">
-            <div className="relative w-full h-[550px] sm:h-[600px] flex items-center justify-center">
+            <div className="relative w-full h-[580px] sm:h-[640px] lg:h-[700px] flex items-center justify-center">
               <Lanyard
-                frontImage="/card-front.png?v=3"
-                backImage="/card-back.png?v=3"
-                strapImage="/band.png?v=4"
+                frontImage="/card-front.png?v=9"
+                backImage="/card-back.png?v=8"
+                strapImage="/band.png?v=5"
                 cardColor="#ffffff"
                 finish="glossy"
+                size={0.65}
+                strapLength={0.24}
               />
             </div>
           </div>
